@@ -1,0 +1,46 @@
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026 trobonox <hello@trobo.dev>, Vexcited
+#
+# SPDX-License-Identifier: Apache-2.0
+
+FROM debian:sid
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Add ARMHF architecture *first*
+RUN dpkg --add-architecture arm64
+
+# Update and upgrade *before* installing anything
+RUN apt update && apt upgrade -y
+
+RUN apt install rustup -y
+RUN rustup default stable
+
+RUN apt-get install -y build-essential \
+    curl \
+    wget \
+    libssl-dev \
+    libgtk-3-dev \
+    libayatana-appindicator3-dev \
+    librsvg2-dev
+
+# Install the ARMHF target libraries
+RUN apt-get install -y \
+    libc6:arm64 \
+    libc6-dev:arm64 \
+    libapparmor1:arm64 \
+    libwebkit2gtk-4.1-dev:arm64 \
+    libssl-dev:arm64 \
+    gcc-aarch64-linux-gnu \
+    g++-aarch64-linux-gnu
+
+RUN rustup target add aarch64-unknown-linux-gnu
+RUN rustup toolchain install stable-aarch64-unknown-linux-gnu
+RUN cargo install --version 2.8.4 tauri-cli
+WORKDIR /app
+
+ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
+    CC_aarch64-unknown-linux-gnu=aarch64-linux-gnu-gcc \
+    CXX_aarch64-unknown-linux-gnu=aarch64-linux-gnu-g++ \
+    PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig \
+    PKG_CONFIG_ALLOW_CROSS=1
+WORKDIR /app/src-tauri
+CMD ["cargo" ,"tauri", "build", "-b", "deb", "--target", "aarch64-unknown-linux-gnu"]

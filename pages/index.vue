@@ -1,0 +1,621 @@
+<!-- SPDX-FileCopyrightText: Copyright (c) 2022-2026 trobonox <hello@trobo.dev>, gitoak, PwshLab -->
+<!-- -->
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!--
+Kanri is an offline Kanban board app made using Tauri and Nuxt.
+Copyright (C) 2022-2026 trobonox <hello@trobo.dev>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<template>
+  <div class="flex size-full flex-row overflow-hidden">
+    <ModalRenameBoard
+      v-show="renameBoardModalVisible"
+      @closeModal="renameBoardModalVisible = false"
+      @renameBoard="renameBoard"
+    />
+
+    <ModalConfirmation
+      v-show="deleteBoardModalVisible"
+      :close-button-text="$t('general.cancelAction')"
+      :confirm-button-text="$t('general.deleteAction')"
+      :description="
+        $t('pages.index.deleteActionConfirmationText', {
+          boardName: boards.find(b => b.id === boardToBeDeletedId)?.title,
+        })
+      "
+      :title="$t('pages.index.deleteActionConfirmationHeading')"
+      @closeModal="
+        deleteBoardModalVisible = false;
+        boardToBeDeletedId = '';
+      "
+      @confirmAction="deleteBoard"
+    />
+
+    <ModalChangelog
+      v-show="changelogModalVisible"
+      @closeModal="changelogModalVisible = false"
+    />
+
+    <ModalNewBoard
+      v-show="newBoardModalVisible"
+      @closeModal="newBoardModalVisible = false"
+    />
+
+    <!-- Left: board list -->
+    <aside
+      class="bg-primary-darker border-elevation-1 flex w-64 shrink-0 flex-col border-r"
+    >
+      <section
+        id="board-search-and-sort"
+        class="border-elevation-1 flex shrink-0 flex-col gap-2 border-b p-3"
+      >
+        <div class="flex flex-row items-center gap-2">
+          <!-- Search input -->
+          <div
+            class="border-elevation-2 bg-elevation-1 focus-within:ring-accent/70 relative min-w-0 flex-1 rounded-md border shadow-sm focus-within:ring-2"
+          >
+            <div
+              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5"
+            >
+              <MagnifyingGlassIcon class="text-dim-3 size-4" />
+            </div>
+            <input
+              v-model="searchQuery"
+              :placeholder="searchPlaceholder"
+              class="placeholder:text-dim-3 h-10 w-full rounded-md bg-transparent px-8 text-sm outline-none"
+              type="text"
+              aria-label="Search boards"
+            >
+            <button
+              v-if="searchQuery"
+              class="text-dim-2 hover:bg-elevation-2-hover absolute inset-y-0 right-0 mr-1 flex items-center rounded-md p-1.5"
+              aria-label="Clear search"
+              @click="searchQuery = ''"
+            >
+              <XMarkIcon class="size-4" />
+            </button>
+          </div>
+
+          <!-- Create new board -->
+          <button
+            class="bg-accent text-buttons transition-button flex size-10 shrink-0 items-center justify-center rounded-md font-semibold"
+            :aria-label="$t('components.sidebar.createNewBoard')"
+            :title="$t('components.sidebar.createNewBoard')"
+            @click="newBoardModalVisible = true"
+          >
+            <PhPlus class="size-5 shrink-0" />
+          </button>
+        </div>
+
+        <!-- Sorting toolbar -->
+        <div
+          v-if="!(boards.length === 0 && loading === false)"
+          class="hide-popper-arrow w-full"
+        >
+          <Dropdown>
+            <template #trigger>
+              <button
+                class="bg-elevation-1 bg-elevation-2-hover transition-button flex h-10 w-full flex-row items-center gap-2 rounded-md px-3"
+              >
+                <PhFunnel class="size-5 shrink-0" />
+                <span class="flex-1 truncate text-left text-sm">{{
+                  sortingOptionText
+                }}</span>
+                <ChevronDownIcon class="size-4 shrink-0" />
+              </button>
+            </template>
+
+            <template #content>
+              <DropdownMenuRadioGroup
+                v-model="boardSortingOption"
+                class="flex flex-col"
+              >
+                <DropdownMenuRadioItem
+                  value="alphabetical"
+                  class="bg-elevation-2-hover flex w-full cursor-pointer flex-row items-center rounded-md px-4 py-1.5 pl-[25px] text-left"
+                  @click="settingsStore.setBoardSortingOption('alphabetical')"
+                >
+                  <DropdownMenuItemIndicator class="absolute left-2 w-[25px]">
+                    <CheckIcon class="size-4" />
+                  </DropdownMenuItemIndicator>
+                  {{ $t("pages.index.sortAlphabetically") }}
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem
+                  value="createdAt"
+                  class="bg-elevation-2-hover flex w-full cursor-pointer flex-row items-center rounded-md px-4 py-1.5 pl-[25px] text-left"
+                  @click="settingsStore.setBoardSortingOption('createdAt')"
+                >
+                  <DropdownMenuItemIndicator class="absolute left-2 w-[25px]">
+                    <CheckIcon class="size-4" />
+                  </DropdownMenuItemIndicator>
+                  {{ $t("pages.index.sortByCreationDate") }}
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem
+                  value="lastEdited"
+                  class="bg-elevation-2-hover flex w-full cursor-pointer flex-row items-center rounded-md px-4 py-1.5 pl-[25px] text-left"
+                  @click="settingsStore.setBoardSortingOption('lastEdited')"
+                >
+                  <DropdownMenuItemIndicator class="absolute left-2 w-[25px]">
+                    <CheckIcon class="size-4" />
+                  </DropdownMenuItemIndicator>
+                  {{ $t("pages.index.sortByLastEdited") }}
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+              <DropdownMenuSeparator class="bg-elevation-2 m-[5px] h-px" />
+              <DropdownMenuCheckboxItem
+                v-model:checked="reverseSorting"
+                class="bg-elevation-2-hover flex w-full cursor-pointer flex-row items-center rounded-md px-4 py-1.5 pl-[25px] text-left"
+                @click="settingsStore.setReverseSorting(reverseSorting)"
+              >
+                <DropdownMenuItemIndicator class="absolute left-2 w-[25px]">
+                  <CheckIcon class="size-4" />
+                </DropdownMenuItemIndicator>
+                {{ $t("pages.index.reversedSortOrder") }}
+              </DropdownMenuCheckboxItem>
+            </template>
+          </Dropdown>
+        </div>
+
+        <p v-if="editSortWarning" class="text-sm text-amber-400/90">
+          {{ $t('pages.index.editSortWarning') }}
+        </p>
+      </section>
+
+      <!-- Board list -->
+      <div id="boards" class="custom-scrollbar flex-1 overflow-y-auto p-3">
+        <p
+          v-if="boards.length === 0 && loading === false"
+          class="text-dim-2 px-1 py-2 text-sm"
+        >
+          {{ $t("pages.index.noBoardsHeading") }}
+        </p>
+
+        <p
+          v-else-if="!loading && searchQuery && visibleBoards?.length === 0"
+          class="text-dim-2 px-1 py-2 text-sm"
+        >
+          {{ noResultsText }}
+        </p>
+
+        <TransitionGroup
+          v-else-if="!loading && visibleBoards && visibleBoards.length > 0"
+          class="flex flex-col gap-3"
+          name="list"
+          tag="div"
+        >
+          <div
+            v-for="board in visibleBoards"
+            id="board-preview"
+            :key="board.id"
+            class="bg-board-preview flex cursor-pointer flex-col rounded-md border-2 shadow-xl transition-transform"
+            :class="[
+              board.id === selectedBoardId
+                ? 'border-accent'
+                : 'border-elevation-1 hover:-translate-y-0.5',
+            ]"
+            role="button"
+            tabindex="0"
+            @click="selectBoard(board.id)"
+            @keydown.enter.prevent="selectBoard(board.id)"
+            @keydown.space.prevent="selectBoard(board.id)"
+          >
+            <LazyKanbanBoardPreview
+              :board="board"
+              :is-simple-preview-mode="(visibleBoards?.length ?? 0) >= 25"
+            />
+            <div
+              class="border-accent flex flex-row justify-between border-t px-1 py-2"
+            >
+              <span
+                class="text-no-overflow w-fit max-w-[180px] px-1 text-lg font-semibold"
+              >
+                {{ board.title }}
+              </span>
+              <Dropdown align="end" :side-offset="-10">
+                <template #trigger>
+                  <button
+                    class="bg-elevation-3-hover transition-button rounded-md px-1 py-0.5"
+                    @click.stop
+                  >
+                    <EllipsisHorizontalIcon class="size-6" />
+                  </button>
+                </template>
+
+                <template #content>
+                  <div class="flex flex-col">
+                    <!-- Group 1: Board actions -->
+                    <DropdownMenuItem
+                      class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left"
+                      @click="renameBoardModal(board.id)"
+                    >
+                      <span class="text-dim-2"><PhPencil class="size-5" /></span>
+                      <span>{{ $t("pages.kanban.renameBoardAction") }}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left"
+                      @click="duplicateBoard(board.id)"
+                    >
+                      <span class="text-dim-2"><PhCopy class="size-5" /></span>
+                      <span>{{ $t("pages.kanban.duplicateBoardAction") }}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left"
+                      @click="exportBoardToJson(board.id)"
+                    >
+                      <span class="text-dim-2"><PhExport class="size-5" /></span>
+                      <span>{{ $t("pages.kanban.exportBoardAction") }}</span>
+                    </DropdownMenuItem>
+                    <div class="border-elevation-3 my-1 border-t" />
+                    <!-- Group 3: Danger zone -->
+                    <DropdownMenuItem
+                      class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left text-red-500"
+                      @click="deleteBoardModal(board.id)"
+                    >
+                      <span>
+                        <PhTrash class="size-5" />
+                      </span>
+                      <span>{{ $t("pages.kanban.deleteBoardAction") }}</span>
+                    </DropdownMenuItem>
+                  </div>
+                </template>
+              </Dropdown>
+            </div>
+          </div>
+        </TransitionGroup>
+      </div>
+    </aside>
+
+    <!-- Right: board detail -->
+    <main class="relative min-w-0 flex-1 overflow-hidden">
+      <KanbanBoardView
+        v-if="hasSelection"
+        :key="selectedBoardId"
+        :board-id="selectedBoardId"
+        embedded
+        @board-deleted="onBoardDeletedFromView"
+        @board-duplicated="onBoardDuplicatedFromView"
+      />
+
+      <div
+        v-else
+        class="flex size-full items-center justify-center overflow-auto p-8"
+      >
+        <div
+          v-if="boards.length === 0 && loading === false"
+          class="items-left flex w-fit max-w-md flex-col justify-center rounded-md p-2"
+        >
+          <h3 class="text-xl font-bold">
+            {{ $t("pages.index.noBoardsHeading") }}
+          </h3>
+          <span>{{ $t("pages.index.createBoardPrompt") }}</span>
+
+          <button
+            class="bg-accent text-buttons transition-button mt-4 flex w-fit flex-row items-center gap-2 rounded-md px-4 py-2 font-semibold"
+            @click="newBoardModalVisible = true"
+          >
+            <PhPlus class="size-5 shrink-0" />
+            <span>{{ $t('components.sidebar.createNewBoard') }}</span>
+          </button>
+
+          <h3 class="mb-0.5 mt-8 text-xl font-bold">
+            {{ $t("pages.index.importDataHeading") }}
+          </h3>
+          <p class="mb-4">
+            {{ $t("pages.index.importDataPrompt") }}
+          </p>
+          <nuxt-link
+            class="bg-elevation-1 bg-elevation-2-hover border-accent cursor-pointer rounded-md border border-dotted p-4 text-center font-semibold"
+            to="/import"
+          >
+            {{ $t("pages.index.importDataButton") }}
+          </nuxt-link>
+
+          <div class="flex w-full flex-col items-start">
+            <h3 class="mb-4 mt-10 text-xl font-bold">
+              {{ $t("pages.index.getUpdatesHeading") }}
+            </h3>
+            <a
+              href="https://discord.gg/AVqHrvxB9C"
+              target="_blank"
+              class="bg-accent cursor-pointer rounded-md px-6 py-2 text-center font-semibold transition-colors"
+              >{{ $t("pages.index.joinDiscordButton") }}</a
+            >
+          </div>
+        </div>
+
+        <div
+          v-else
+          class="text-dim-2 flex flex-col items-center gap-2 text-center"
+        >
+          <h3 class="text-xl font-semibold">
+            {{ $t("pages.index.selectBoardHeading") }}
+          </h3>
+          <p>{{ $t("pages.index.selectBoardPrompt") }}</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Board, Column } from "@/types/kanban-types";
+
+import emitter from "@/utils/emitter";
+import { ChevronDownIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import { CheckIcon, EllipsisHorizontalIcon } from "@heroicons/vue/24/solid";
+import { PhFunnel, PhPlus, PhTrash, PhExport, PhCopy, PhPencil } from "@phosphor-icons/vue";
+import { useI18n } from "vue-i18n";
+import { save } from "@tauri-apps/plugin-dialog";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
+
+const layoutSettings = useLayoutStore();
+const boardsStore = useBoardsStore();
+const settingsStore = useSettingsStore();
+
+const { boards } = storeToRefs(boardsStore);
+const { boardSortingOption, reverseSorting } = storeToRefs(settingsStore);
+
+const loading = ref(true);
+const editSortWarning = ref(false);
+
+const newBoardModalVisible = ref(false);
+const renameBoardModalVisible = ref(false);
+const deleteBoardModalVisible = ref(false);
+const changelogModalVisible = ref(false);
+
+const searchQuery = ref("");
+const selectedBoardId = ref("");
+
+const boardToBeDeletedId = ref("");
+const { t } = useI18n();
+
+const sortingOptionText = computed(() => {
+    switch (boardSortingOption.value) {
+      case "alphabetical":
+        return t("pages.index.sortAlphabetically");
+
+      case "createdAt":
+        return t("pages.index.sortByCreationDate");
+
+      case "lastEdited":
+        return t("pages.index.sortByLastEdited");
+
+      default:
+        return boardSortingOption.value;
+    }
+});
+
+const searchPlaceholder = computed(() => {
+  const key = "pages.index.searchBoardsPlaceholder";
+  const result = t(key) as string;
+  return result === key ? "Search boards..." : result;
+});
+
+const noResultsText = computed(() => {
+  const key = "pages.index.noBoardsMatch";
+  const result = t(key) as string;
+  return result === key ? "No boards match your search." : result;
+});
+
+const handleCreateBoard = async ({ columns, title }: { columns?: Column[]; title: string }) => {
+  await createNewBoard(title, columns);
+};
+
+const visibleBoards = computed(() => {
+  if (!boards) return;
+
+  const q = searchQuery.value.trim().toLowerCase();
+
+  // TODO: make this a bit more robust
+  const searchResults = boards.value.filter((b) => b.title.toLowerCase().includes(q));
+  const sortedSearchResults = getSortedBoards(searchResults, boardSortingOption.value, reverseSorting.value);
+
+  return sortedSearchResults;
+});
+
+// Whether a board is currently selected (and still exists) for the detail pane.
+const hasSelection = computed(() =>
+  boards.value.some((b) => b.id === selectedBoardId.value)
+);
+
+// Keeps the right pane pointed at a valid board: if the current selection is
+// gone (deleted / never set), fall back to the first visible board.
+const ensureSelection = () => {
+  if (boards.value.some((b) => b.id === selectedBoardId.value)) return;
+
+  const next = visibleBoards.value?.[0] ?? boards.value[0];
+  selectedBoardId.value = next ? next.id : "";
+};
+
+const selectBoard = (id: string) => {
+  selectedBoardId.value = id;
+};
+
+const selectNewestBoard = () => {
+  const newest = [...boards.value].sort(
+    (a, b) =>
+      new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
+  )[0];
+  if (newest) selectedBoardId.value = newest.id;
+};
+
+onMounted(async () => {
+  emitter.on("createBoard", handleCreateBoard);
+
+  nextTick(async () => {
+    console.log("Checking if changelog needs to be shown...");
+    const showChangelog = await layoutSettings.shouldDisplayChangelog();
+    if (showChangelog) {
+      changelogModalVisible.value = true;
+    }
+  });
+
+  await boardsStore.init();
+  await settingsStore.loadBoardSortingOptions();
+
+  loading.value = false;
+  ensureSelection();
+});
+
+onBeforeUnmount(() => {
+  // Make sure we properly remove our event listeners
+  emitter.off("createBoard", handleCreateBoard);
+  emitter.off("openChangelogModal");
+});
+
+// Safety net: when boards are added/removed externally keep a valid selection.
+watch(
+  () => boards.value.length,
+  () => ensureSelection()
+);
+
+const getSortedBoards = (boards: Board[], sortingOption: string, reverseSort: boolean) => {
+  // TODO: add createdAt for boards that don't have the property yet
+  const sortMethod = getSortingFunctionFromString<Board>(sortingOption);
+
+  const sortedBoards = sortMethod(boards);
+
+  if (reverseSort) return sortedBoards.toReversed();
+  else return sortedBoards;
+};
+
+const createNewBoard = async (title: string, columns?: Column[]) => {
+  const board: Board = {
+    columns: columns || exampleColumns.map((column) => ({ ...column, id: generateUniqueID() })),
+    id: generateUniqueID(),
+    lastEdited: new Date(),
+    createdAt: new Date(),
+    title: title,
+  };
+
+  boardsStore.upsertBoard(board);
+  selectedBoardId.value = board.id;
+};
+
+const renameBoardModal = (id: string) => {
+  if (!boards.value) return;
+
+  const selectedBoard = boards.value.find(b => b.id === id);
+  if (selectedBoard == null) {
+    return console.error("Could not find board with id: ", id);
+  }
+
+  emitter.emit("openBoardRenameModal", { board: selectedBoard });
+  renameBoardModalVisible.value = true;
+};
+
+const renameBoard = async (id: string, name: string) => {
+  if (!boards.value || !boardsStore.boards) return;
+  boardsStore.renameBoard(id, name);
+};
+
+const deleteBoardModal = (id: string) => {
+  if (!boards.value) return;
+
+  const selectedBoard = boards.value.find(b => b.id === id);
+  if (selectedBoard == null) {
+    return console.error("Could not find board with id: ", id);
+  }
+
+  boardToBeDeletedId.value = id;
+
+  emitter.emit("openBoardDeleteModal", {
+    description: t("pages.index.deleteActionConfirmationText", {
+      boardName: selectedBoard.title,
+    }),
+    id: id,
+  });
+  deleteBoardModalVisible.value = true;
+};
+
+const deleteBoard = async (boardId: string | undefined) => {
+  if (!deleteBoardModalVisible.value) return;
+  if (!boardId) return;
+
+  // Find the board before deletion for the event
+  const boardToDelete = boards.value.find(b => b.id === boardId);
+  if (!boardToDelete) return;
+
+  // Remove from store (which handles persistence)
+  boardsStore.removeBoard(boardId);
+  ensureSelection();
+};
+
+const duplicateBoard = async (id: string) => {
+  if (!id) return;
+
+  const idsBefore = new Set(boards.value.map((b) => b.id));
+  boardsStore.duplicateBoard(id);
+
+  const copy = boards.value.find((b) => !idsBefore.has(b.id));
+  if (copy) selectedBoardId.value = copy.id;
+};
+
+const exportBoardToJson = async (id: string) => {
+  if (!id) return;
+
+  const boardToExport = boards.value.find(b => b.id === id);
+  if (!boardToExport) return;
+
+  const filePath = await save({
+    defaultPath: `./${new Date().toISOString().slice(0, 10)}_kanri_board_${boardToExport.id}_export.json`,
+    filters: [
+      {
+        extensions: ["json"],
+        name: "JSON File",
+      },
+    ],
+    title: "Select file to export data to",
+  });
+
+  const fileContents = JSON.stringify(boardToExport, null, 2);
+
+  if (filePath == null) return;
+  await writeTextFile(filePath, fileContents);
+};
+
+// Handlers for events coming from the embedded board view (right pane).
+const onBoardDeletedFromView = () => {
+  ensureSelection();
+};
+
+const onBoardDuplicatedFromView = () => {
+  selectNewestBoard();
+};
+</script>
+
+<style scoped>
+.list-move,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.list-leave-active {
+  position: absolute;
+}
+
+.bg-board-preview {
+  background: radial-gradient(
+    circle at bottom left,
+    var(--elevation-1) 30%,
+    transparent
+  );
+}
+</style>

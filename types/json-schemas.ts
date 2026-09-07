@@ -100,6 +100,7 @@ export const kanriJsonSchema = z.object({
   columnZoomLevel: z.number().optional().nullable(),
   lastInstalledVersion: z.string().optional().nullable(),
   savedCustomTheme: kanriThemeSchema.optional().nullable(),
+  themeOverrides: z.record(z.string(), kanriThemeSchema).optional().nullable(),
   reverseSorting: z.boolean().optional().nullable(),
   addToTopOfColumnButtonEnabled: z.boolean().optional().nullable(),
   displayColumnCardCountEnabled: z.boolean().optional().nullable(),

@@ -61,6 +61,8 @@
       "setThemeAuto": "Automatically set theme based on system preference",
       "customThemeOption": "Custom",
       "customThemeEditorHeading": "Select the colors for your custom theme:",
+      "themeColorEditorHeading": "Theme colors",
+      "resetThemeColorsAction": "Reset to default",
       "customThemeImportHeading": "Or import/export a custom theme:",
       "customThemeImportHeadingSubtext": "Note: imports override your current theme so export any custom theme which you don't want to lose in advance!",
       "colorResetText": "If the colors do not update, please click ",

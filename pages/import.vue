@@ -241,6 +241,7 @@ const exportJSON = async () => {
   const activeTheme = await store.get("activeTheme");
   const colors = await store.get("colors");
   const savedCustomTheme = await store.get("savedCustomTheme");
+  const themeOverrides = await store.get("themeOverrides");
   const columnZoomLevel = await store.get("columnZoomLevel");
   const lastInstalledVersion = await store.get("lastInstalledVersion");
   const animationsEnabled = await store.get("animationsEnabled");
@@ -264,6 +265,7 @@ const exportJSON = async () => {
       columnZoomLevel,
       lastInstalledVersion,
       savedCustomTheme,
+      themeOverrides,
       reverseSorting,
       animationsEnabled,
       defaultRelativeDueDatesEnabled,
@@ -375,6 +377,9 @@ const importFromKanriFull = async () => {
   store.set("columnZoomLevel", zodParsed.columnZoomLevel);
   store.set("boardSortingOption", zodParsed.boardSortingOption);
   store.set("savedCustomTheme", zodParsed.savedCustomTheme);
+  if (zodParsed.themeOverrides !== undefined && zodParsed.themeOverrides !== null) {
+    store.set("themeOverrides", zodParsed.themeOverrides);
+  }
   store.set("lastInstalledVersion", zodParsed.lastInstalledVersion);
   store.set("animationsEnabled", zodParsed.animationsEnabled);
   if (zodParsed.defaultRelativeDueDatesEnabled !== undefined) {

@@ -66,6 +66,23 @@ export const catppuccin: Theme = {
   textD4: "#71717a",
 } as const;
 
+// Preset seed palette for the custom theme: clean neutral professional light
+// (cool gray canvas + white surfaces + blue accent + slate text ramp)
+export const professionalLight: Theme = {
+  accent: "#2563eb",
+  accentDarker: "#1d4ed8",
+  bgPrimary: "#f6f7f9",
+  elevation1: "#ffffff",
+  elevation2: "#eef0f3",
+  elevation3: "#e2e5ea",
+  text: "#1e293b",
+  textButtons: "#ffffff",
+  textD1: "#334155",
+  textD2: "#475569",
+  textD3: "#64748b",
+  textD4: "#94a3b8",
+} as const;
+
 export default {
   catppuccin,
   dark,

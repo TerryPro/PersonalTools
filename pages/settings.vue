@@ -148,17 +148,37 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 <PaintBrushIcon class="size-5" />
               </div>
               <div class="flex-1">
-                <h3 class="text-[15px] font-semibold">
-                  {{ $t("pages.settings.customThemeEditorHeading") }}
-                </h3>
-                <CustomThemeEditor class="mt-3" />
-                <h3 class="mt-5 text-[15px] font-semibold">
+                <div class="flex flex-row items-center justify-between gap-3">
+                  <h3 class="text-[15px] font-semibold">
+                    {{
+                      isCustomTheme
+                        ? $t("pages.settings.customThemeEditorHeading")
+                        : $t("pages.settings.themeColorEditorHeading")
+                    }}
+                  </h3>
+                  <button
+                    class="bg-elevation-1 bg-elevation-2-hover border-elevation-2 flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm"
+                    @click="resetThemeColors"
+                  >
+                    <ArrowPathIcon class="size-4" />
+                    {{ $t("pages.settings.resetThemeColorsAction") }}
+                  </button>
+                </div>
+                <CustomThemeEditor
+                  :key="activeTheme + '-' + themeEditorKey"
+                  :theme-id="activeTheme"
+                  class="mt-3"
+                />
+                <h3
+                  v-if="isCustomTheme"
+                  class="mt-5 text-[15px] font-semibold"
+                >
                   {{ $t("pages.settings.customThemeImportHeading") }}
                 </h3>
-                <span class="text-dim-2 text-[13px]">{{
+                <span v-if="isCustomTheme" class="text-dim-2 text-[13px]">{{
                   $t("pages.settings.customThemeImportHeadingSubtext")
                 }}</span>
-                <div class="my-2 flex flex-row gap-2">
+                <div v-if="isCustomTheme" class="my-2 flex flex-row gap-2">
                   <button
                     class="bg-elevation-1 bg-elevation-2-hover border-accent flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-1.5"
                     @click="importThemeFromJson"
@@ -460,14 +480,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 </template>
 
 <script setup lang="ts">
+import type { BuiltinThemeId } from "@/stores/theme";
 import type { ThemeIdentifiers } from "@/types/kanban-types";
 import type { Component } from "vue";
 
 import IconCatppuccin from "@/components/icon/Catppuccin.vue";
 import { kanriThemeSchema } from "@/types/json-schemas";
-import { catppuccin, dark, light } from "@/utils/themes";
 import {
   ArrowDownTrayIcon,
+  ArrowPathIcon,
   ArrowUpTrayIcon,
   BoltIcon,
   CalendarIcon,
@@ -498,7 +519,10 @@ const theme = useThemeStore();
 const { t, locale } = useI18n();
 
 const { activeTheme } = toRefs(theme);
-const themeEditorDisplayed = computed(() => activeTheme.value === "custom");
+const themeEditorDisplayed = computed(() => activeTheme.value !== "auto");
+const isCustomTheme = computed(() => activeTheme.value === "custom");
+const themeEditorKey = ref(0);
+const builtinColors = (id: BuiltinThemeId) => theme.getEffectiveThemeColors(id);
 const systemTheme = useDark();
 
 const deleteBoardModalVisible = ref(false);
@@ -521,19 +545,31 @@ const themeOptions = computed<ThemeOption[]>(() => [
     id: "light",
     label: t("pages.settings.lightThemeOption"),
     icon: SunIcon,
-    swatches: [light.bgPrimary, light.elevation1, light.accent],
+    swatches: [
+      builtinColors("light").bgPrimary,
+      builtinColors("light").elevation1,
+      builtinColors("light").accent,
+    ],
   },
   {
     id: "dark",
     label: t("pages.settings.darkThemeOption"),
     icon: MoonIcon,
-    swatches: [dark.bgPrimary, dark.elevation1, dark.accent],
+    swatches: [
+      builtinColors("dark").bgPrimary,
+      builtinColors("dark").elevation1,
+      builtinColors("dark").accent,
+    ],
   },
   {
     id: "catppuccin",
     label: t("pages.settings.catppuccinThemeOption"),
     icon: IconCatppuccin,
-    swatches: [catppuccin.bgPrimary, catppuccin.elevation1, catppuccin.accent],
+    swatches: [
+      builtinColors("catppuccin").bgPrimary,
+      builtinColors("catppuccin").elevation1,
+      builtinColors("catppuccin").accent,
+    ],
   },
   {
     id: "custom",
@@ -545,8 +581,6 @@ const themeOptions = computed<ThemeOption[]>(() => [
 
 const setTheme = async (themeName: ThemeIdentifiers) => {
   activeTheme.value = themeName;
-
-  const themes = { catppuccin, dark, light };
 
   if (themeName === "custom") {
     // handling is done through watcher in CustomThemeEditor
@@ -560,7 +594,27 @@ const setTheme = async (themeName: ThemeIdentifiers) => {
     return;
   }
 
-  await theme.setTheme(themeName, themes[themeName]);
+  // stock palette merged with user overrides inside the theme store
+  await theme.setTheme(themeName);
+};
+
+const resetThemeColors = async () => {
+  if (activeTheme.value === "custom") {
+    // custom themes reset to the professional light preset palette
+    await theme.resetCustomTheme();
+    themeEditorKey.value++;
+    return;
+  }
+
+  if (
+    activeTheme.value !== "light" &&
+    activeTheme.value !== "dark" &&
+    activeTheme.value !== "catppuccin"
+  )
+    return;
+
+  await theme.resetThemeOverride(activeTheme.value);
+  themeEditorKey.value++;
 };
 
 const deleteAllData = async () => {

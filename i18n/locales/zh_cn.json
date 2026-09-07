@@ -61,6 +61,8 @@
       "setThemeAuto": "根据系统偏好自动设置主题",
       "customThemeOption": "自定义",
       "customThemeEditorHeading": "选择自定义主题的颜色：",
+      "themeColorEditorHeading": "主题颜色",
+      "resetThemeColorsAction": "恢复默认",
       "customThemeImportHeading": "或导入/导出自定义主题：",
       "customThemeImportHeadingSubtext": "注意：导入会覆盖您当前的主题，因此请先导出任何不想丢失的自定义主题！",
       "colorResetText": "如果颜色没有更新，请点击",

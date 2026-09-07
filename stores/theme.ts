@@ -20,8 +20,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import { defineStore } from 'pinia'
-import { dark } from '@/utils/themes';
-import type { Theme } from '@/types/kanban-types';
+import { dark, professionalLight } from '@/utils/themes';
+import type { Theme, ThemeIdentifiers } from '@/types/kanban-types';
+
+export type BuiltinThemeId = Exclude<ThemeIdentifiers, "auto" | "custom">;
+export type ThemeOverrides = Partial<Record<BuiltinThemeId, Theme>>;
 
 export const useThemeStore = defineStore("theme", {
   state: () => {
@@ -29,8 +32,9 @@ export const useThemeStore = defineStore("theme", {
     const colors: Ref<Theme | null> = ref(null);
     const savedCustomTheme: Ref<Theme | null> = ref(null);
     const autoThemeEnabled = ref(false);
+    const themeOverrides: Ref<ThemeOverrides> = ref({});
 
-    return { activeTheme, colors, savedCustomTheme, autoThemeEnabled };
+    return { activeTheme, colors, savedCustomTheme, autoThemeEnabled, themeOverrides };
   },
   actions: {
     async loadThemeSettings() {
@@ -39,16 +43,29 @@ export const useThemeStore = defineStore("theme", {
       const activeThemeSaved: string = await store.get("activeTheme") ?? "dark";
       const colorsSaved: Theme | null = await store.get("colors") ?? dark;
       const savedCustomThemeSaved: Theme | null = await store.get("savedCustomTheme") ?? null;
+      const themeOverridesSaved: ThemeOverrides = await store.get("themeOverrides") ?? {};
       const autoThemeEnabledSaved: boolean = await store.get("activeTheme") === "auto" ? true : false;
 
       this.activeTheme = activeThemeSaved;
       this.colors = colorsSaved;
       this.savedCustomTheme = savedCustomThemeSaved;
       this.autoThemeEnabled = autoThemeEnabledSaved;
+      this.themeOverrides = themeOverridesSaved;
+    },
+
+    // Effective palette of a built-in theme: stock palette merged with user overrides
+    getEffectiveThemeColors(themeId: BuiltinThemeId): Theme {
+      // always hand out a copy so reactive consumers cannot mutate the stock palette
+      return this.themeOverrides[themeId] ?? { ...themes[themeId] };
     },
 
     async setTheme(theme: string, colors: Theme | null = null) {
       const store = useTauriStore().store;
+
+      // built-in themes always resolve to stock palette merged with user overrides
+      if (theme === "light" || theme === "dark" || theme === "catppuccin") {
+        colors = this.getEffectiveThemeColors(theme);
+      }
 
       this.activeTheme = theme;
       await store.set("activeTheme", theme);
@@ -75,8 +92,49 @@ export const useThemeStore = defineStore("theme", {
         await store.set("activeTheme", resolvedSystemTheme);
       }
 
-      this.colors = themes[resolvedSystemTheme];
-      await store.set("colors", themes[resolvedSystemTheme]);
+      this.colors = this.getEffectiveThemeColors(resolvedSystemTheme);
+      await store.set("colors", this.colors);
+    },
+
+    async setThemeOverride(themeId: BuiltinThemeId, colors: Theme) {
+      const store = useTauriStore().store;
+
+      this.themeOverrides = { ...this.themeOverrides, [themeId]: colors };
+      await store.set("themeOverrides", this.themeOverrides);
+
+      if (this.activeTheme === themeId) {
+        this.colors = colors;
+        await store.set("colors", colors);
+      }
+    },
+
+    async resetThemeOverride(themeId: BuiltinThemeId) {
+      const store = useTauriStore().store;
+
+      const nextOverrides = Object.fromEntries(
+        Object.entries(this.themeOverrides).filter(([id]) => id !== themeId)
+      ) as ThemeOverrides;
+      this.themeOverrides = nextOverrides;
+      await store.set("themeOverrides", nextOverrides);
+
+      if (this.activeTheme === themeId) {
+        this.colors = { ...themes[themeId] };
+        await store.set("colors", this.colors);
+      }
+    },
+
+    // Restore the custom theme to its professional light preset palette
+    async resetCustomTheme() {
+      const store = useTauriStore().store;
+
+      const preset: Theme = { ...professionalLight };
+      this.savedCustomTheme = preset;
+      await store.set("savedCustomTheme", preset);
+
+      if (this.activeTheme === "custom") {
+        this.colors = preset;
+        await store.set("colors", preset);
+      }
     }
   }
 })

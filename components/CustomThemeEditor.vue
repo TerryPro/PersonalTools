@@ -98,38 +98,75 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 <script setup lang="ts">
 import { lightenColor } from "@/utils/colorUtils";
-import { dark } from "@/utils/themes";
+import { professionalLight } from "@/utils/themes";
+import type { BuiltinThemeId } from "@/stores/theme";
+import type { Theme, ThemeIdentifiers } from "@/types/kanban-types";
+
+const props = defineProps<{
+  themeId: ThemeIdentifiers;
+}>();
 
 const theme = useThemeStore();
-const customTheme = ref(dark);
 
-onMounted(async () => {
-  const savedPalette = theme.savedCustomTheme ?? theme.colors;
-  await theme.setTheme("custom", savedPalette);
-  customTheme.value = savedPalette || dark;
-});
+// Built-in themes persist user edits as overrides; the custom theme keeps its own saved palette
+const isCustomTheme = props.themeId === "custom";
 
-// generate shades for accentDarker and text shades
+const seedPalette = (): Theme => {
+  if (isCustomTheme) {
+    // copy: v-model writes must not mutate store state objects directly;
+    // first-time custom themes start from the professional light preset
+    return { ...(theme.savedCustomTheme ?? professionalLight) };
+  }
+  return theme.getEffectiveThemeColors(props.themeId as BuiltinThemeId);
+};
+
+const customTheme = ref<Theme>(seedPalette());
+let prevSnapshot: Theme = { ...customTheme.value };
+
+const persist = () => {
+  const snapshot: Theme = { ...customTheme.value };
+  if (isCustomTheme) {
+    theme.setTheme("custom", snapshot);
+  } else {
+    theme.setThemeOverride(props.themeId as BuiltinThemeId, snapshot);
+  }
+};
+
+// update derived shades whenever their base color changes
 watch(
-  () => customTheme.value,
+  customTheme,
   (newValue) => {
-    const accentDarker = lightenColor(newValue.accent, -20);
-    const textDim1 = lightenColor(newValue.text, 20);
-    const textDim2 = lightenColor(newValue.text, 40);
-    const textDim3 = lightenColor(newValue.text, 60);
+    const changedKeys = (
+      Object.keys(newValue) as (keyof Theme)[]
+    ).filter((key) => newValue[key] !== prevSnapshot[key]);
+    if (changedKeys.length === 0) return;
 
-    const updatedTheme = {
-      ...newValue,
-      accentDarker,
-      textDim1,
-      textDim2,
-      textDim3,
-    };
+    const updatedTheme: Theme = { ...newValue };
+    if (changedKeys.includes("accent")) {
+      updatedTheme.accentDarker = lightenColor(newValue.accent, -20);
+    }
+    if (changedKeys.includes("text")) {
+      updatedTheme.textD1 = lightenColor(newValue.text, 20);
+      updatedTheme.textD2 = lightenColor(newValue.text, 40);
+      updatedTheme.textD3 = lightenColor(newValue.text, 60);
+      updatedTheme.textD4 = lightenColor(newValue.text, 80);
+    }
 
-    theme.setTheme("custom", updatedTheme);
+    prevSnapshot = { ...updatedTheme };
+    customTheme.value = updatedTheme;
+    persist();
   },
   { deep: true }
 );
+
+onMounted(async () => {
+  if (!isCustomTheme) return;
+
+  const savedPalette = theme.savedCustomTheme ?? professionalLight;
+  await theme.setTheme("custom", savedPalette);
+  customTheme.value = { ...savedPalette };
+  prevSnapshot = { ...customTheme.value };
+});
 </script>
 
 <style scoped>

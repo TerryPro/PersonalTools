@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 <template>
-  <div class="flex w-[48rem] flex-col gap-4 mb-6">
+  <div class="mb-6 flex w-full max-w-3xl flex-col gap-4">
     <div id="color-row" class="flex flex-row items-center justify-between">
       <label for="color-picker">{{
         $t("components.customThemeEditor.optionAccentColor")
       }}</label>
       <div class="flex flex-row gap-4">
         <HexColorInput v-model="customTheme.accent" />
-        <input ref="colorInput" v-model="customTheme.accent" type="color" />
+        <input ref="colorInput" v-model="customTheme.accent" type="color" >
       </div>
     </div>
 
@@ -36,7 +36,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       }}</label>
       <div class="flex flex-row gap-4">
         <HexColorInput v-model="customTheme.text" />
-        <input ref="colorInput" v-model="customTheme.text" type="color" />
+        <input ref="colorInput" v-model="customTheme.text" type="color" >
       </div>
     </div>
 
@@ -50,7 +50,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           ref="colorInput"
           v-model="customTheme.textButtons"
           type="color"
-        />
+        >
       </div>
     </div>
 
@@ -60,7 +60,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       }}</label>
       <div class="flex flex-row gap-4">
         <HexColorInput v-model="customTheme.bgPrimary" />
-        <input ref="colorInput" v-model="customTheme.bgPrimary" type="color" />
+        <input ref="colorInput" v-model="customTheme.bgPrimary" type="color" >
       </div>
     </div>
 
@@ -70,7 +70,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       }}</label>
       <div class="flex flex-row gap-4">
         <HexColorInput v-model="customTheme.elevation1" />
-        <input ref="colorInput" v-model="customTheme.elevation1" type="color" />
+        <input ref="colorInput" v-model="customTheme.elevation1" type="color" >
       </div>
     </div>
 
@@ -80,7 +80,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       }}</label>
       <div class="flex flex-row gap-4">
         <HexColorInput v-model="customTheme.elevation2" />
-        <input ref="colorInput" v-model="customTheme.elevation2" type="color" />
+        <input ref="colorInput" v-model="customTheme.elevation2" type="color" >
       </div>
     </div>
 
@@ -90,7 +90,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       }}</label>
       <div class="flex flex-row gap-4">
         <HexColorInput v-model="customTheme.elevation3" />
-        <input ref="colorInput" v-model="customTheme.elevation3" type="color" />
+        <input ref="colorInput" v-model="customTheme.elevation3" type="color" >
       </div>
     </div>
   </div>

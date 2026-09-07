@@ -47,6 +47,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <!-- Flexible draggable spacer -->
     <div class="h-full flex-1" data-tauri-drag-region />
 
+    <!-- Help & About (globally available) -->
+    <button
+      class="text-dim-2 bg-elevation-2-hover transition-button flex h-full w-11 shrink-0 items-center justify-center"
+      type="button"
+      :aria-label="$t('components.sidebar.help')"
+      :title="$t('components.sidebar.help')"
+      @click="showSidebarHelpModal = true"
+    >
+      <PhQuestion class="size-4" />
+    </button>
+
     <!-- Window controls (Windows / Linux only) -->
     <div v-if="showControls" class="flex h-full items-stretch">
       <button
@@ -92,7 +103,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 <script setup lang="ts">
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { platform } from "@tauri-apps/plugin-os";
-import { PhCopy, PhMinus, PhSquare, PhX } from "@phosphor-icons/vue";
+import { PhCopy, PhMinus, PhQuestion, PhSquare, PhX } from "@phosphor-icons/vue";
+
+const { showSidebarHelpModal } = storeToRefs(useLayoutStore());
 
 const isMac = ref(false);
 const showControls = ref(false);

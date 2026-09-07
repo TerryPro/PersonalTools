@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 <template>
-  <main id="settings" class="pl-8 pr-6 pt-6">
+  <main id="settings" class="pb-8 pl-8 pr-6 pt-6">
     <ModalConfirmation
       v-show="deleteBoardModalVisible"
       :close-button-text="$t('general.cancelAction')"
@@ -32,29 +32,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       @confirmAction="deleteAllData"
     />
 
-    <div class="max-w-3xl">
-      <!-- 顶部 sticky 锚点导航 -->
-      <nav
-        class="settings-nav border-elevation-2 sticky top-0 z-20 -mx-2 mb-8 flex gap-2 overflow-x-auto border-b px-2 py-3"
-      >
-        <button
-          v-for="anchor in anchors"
-          :key="anchor.id"
-          class="border-elevation-2 bg-elevation-1 hover:bg-elevation-2 transition-button flex shrink-0 cursor-pointer flex-row items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold"
-          :class="
-            activeAnchor === anchor.id
-              ? 'bg-accent border-accent text-buttons'
-              : 'text-dim-2 hover:text-normal'
-          "
-          @click="scrollToSection(anchor.id)"
-        >
-          <component :is="anchor.icon" class="size-4" />
-          {{ anchor.label }}
-        </button>
-      </nav>
-
+    <div
+      class="grid max-w-6xl grid-cols-1 items-start gap-x-6 gap-y-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
+    >
       <!-- ============ 外观 ============ -->
-      <section id="appearance" class="mb-9 scroll-mt-20">
+      <section id="appearance" class="lg:col-start-2 lg:row-span-3 lg:row-start-1">
         <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
           <span class="bg-accent inline-block size-2 rounded-full" />
           {{ $t("pages.settings.sectionAppearanceHeading") }}
@@ -70,7 +52,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           >
             {{ $t("pages.settings.sectionThemeHeading") }}
           </div>
-          <div class="grid grid-cols-4 gap-3">
+          <div class="grid grid-cols-2 gap-3">
             <button
               v-for="opt in themeOptions"
               :key="opt.id"
@@ -199,14 +181,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       </section>
 
       <!-- ============ 看板 ============ -->
-      <section id="board" class="mb-9 scroll-mt-20">
-        <h2 class="mb-1 flex flex-row items-center gap-2.5 text-xl font-bold">
+      <section id="board" class="lg:col-start-1 lg:row-start-1">
+        <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
           <span class="bg-accent inline-block size-2 rounded-full" />
           {{ $t("pages.settings.preferencesHeading") }}
         </h2>
-        <span class="text-dim-3 mb-3 block text-sm">{{
-          $t("pages.settings.preferencesSubtext")
-        }}</span>
 
         <div class="bg-elevation-1 border-elevation-2 rounded-xl border">
           <div class="flex flex-row items-center justify-between gap-5 p-4">
@@ -328,7 +307,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       </section>
 
       <!-- ============ 通用 ============ -->
-      <section id="general" class="mb-9 scroll-mt-20">
+      <section id="general" class="lg:col-start-1 lg:row-start-2">
         <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
           <span class="bg-accent inline-block size-2 rounded-full" />
           {{ $t("pages.settings.miscellaneousHeading") }}
@@ -441,7 +420,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       </section>
 
       <!-- ============ 数据 ============ -->
-      <section id="data" class="mb-9 scroll-mt-20">
+      <section id="data" class="lg:col-start-1 lg:row-start-3">
         <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
           <span class="bg-accent inline-block size-2 rounded-full" />
           {{ $t("pages.settings.sectionDataHeading") }}
@@ -504,8 +483,6 @@ import {
   SparklesIcon,
   SunIcon,
   SwatchIcon,
-  TrashIcon,
-  ViewColumnsIcon,
 } from "@heroicons/vue/24/outline";
 
 import { message, open, save } from "@tauri-apps/plugin-dialog";
@@ -565,56 +542,6 @@ const themeOptions = computed<ThemeOption[]>(() => [
     swatches: null,
   },
 ]);
-
-// 锚点导航
-const anchors = computed<{ id: string; label: string; icon: Component }[]>(
-  () => [
-    {
-      id: "appearance",
-      label: t("pages.settings.sectionAppearanceHeading"),
-      icon: SwatchIcon,
-    },
-    {
-      id: "board",
-      label: t("pages.settings.preferencesHeading"),
-      icon: ViewColumnsIcon,
-    },
-    {
-      id: "general",
-      label: t("pages.settings.miscellaneousHeading"),
-      icon: GlobeAltIcon,
-    },
-    {
-      id: "data",
-      label: t("pages.settings.sectionDataHeading"),
-      icon: TrashIcon,
-    },
-  ]
-);
-const activeAnchor = ref("appearance");
-
-const scrollToSection = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({
-    behavior: globalSettingsStore.animationsEnabled ? "smooth" : "auto",
-    block: "start",
-  });
-};
-
-let observer: IntersectionObserver | undefined;
-onMounted(() => {
-  const scrollRoot = document.querySelector(".default-layout");
-  const sections = document.querySelectorAll<HTMLElement>("#settings section[id]");
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) activeAnchor.value = entry.target.id;
-      });
-    },
-    { root: scrollRoot, rootMargin: "-90px 0px -70% 0px", threshold: 0 }
-  );
-  sections.forEach((section) => observer?.observe(section));
-});
-onBeforeUnmount(() => observer?.disconnect());
 
 const setTheme = async (themeName: ThemeIdentifiers) => {
   activeTheme.value = themeName;
@@ -719,11 +646,6 @@ const importThemeFromJson = async () => {
 </style>
 
 <style scoped>
-.settings-nav {
-  background-color: color-mix(in srgb, var(--bg-primary) 82%, transparent);
-  backdrop-filter: blur(12px);
-}
-
 .theme-card-selected {
   background-color: color-mix(in srgb, var(--accent) 10%, var(--bg-primary));
 }

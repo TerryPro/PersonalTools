@@ -30,13 +30,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     </Teleport>
 
     <section id="items-top" class="flex flex-col items-center gap-4">
-      <div id="logo" class="flex flex-row rounded-md">
-        <IconKanri
-          class="text-accent-logo-icon size-9 pl-1"
-          @click="$router.push('/')"
-        />
-      </div>
-
       <Tooltip :label="$t('components.sidebar.kanban')">
         <template #trigger>
           <button
@@ -63,17 +56,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         </template>
       </Tooltip>
 
-      <Tooltip :label="$t('components.sidebar.help')">
-        <template #trigger>
-          <button
-            class="bg-elevation-2-hover transition-button rounded-md p-2"
-            @click="showSidebarHelpModal = true"
-          >
-            <PhQuestion class="size-7" />
-          </button>
-        </template>
-      </Tooltip>
-
       <Tooltip :label="$t('components.sidebar.settings')">
         <template #trigger>
           <nuxt-link to="/settings">
@@ -92,7 +74,6 @@ import {
   PhKanban,
   PhArrowsLeftRight,
   PhGearSix,
-  PhQuestion,
 } from "@phosphor-icons/vue";
 
 const { showSidebarHelpModal } = storeToRefs(useLayoutStore());

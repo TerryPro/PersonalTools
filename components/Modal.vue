@@ -19,19 +19,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 <template>
-  <transition name="modal-fade">
+  <div
+    :class="blurBackground ? 'backdrop-blur-xl' : 'backdrop-brightness-50'"
+    class="modal z-huge size-screen inset-0 flex flex-col items-center justify-center bg-zinc-800/40 bg-clip-padding"
+    @click.self="clickOutsideClose ? $emit('closeModal') : () => {}"
+  >
     <div
-      :class="blurBackground ? 'backdrop-blur-xl' : 'backdrop-brightness-50'"
-      class="modal z-huge size-screen inset-0 flex flex-col items-center justify-center bg-zinc-800/40 bg-clip-padding"
-      @click.self="clickOutsideClose ? $emit('closeModal') : () => {}"
+      class="min-h-content min-w-content rounded-md bg-elevation-1 py-4 pl-8 pr-6 shadow-lg"
     >
-      <div
-        class="bg-elevation-1 min-h-content min-w-content rounded-md py-4 pl-8 pr-6 shadow-lg"
-      >
-        <slot class="p-4" name="content" />
-      </div>
+      <slot class="p-4" name="content" />
     </div>
-  </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -88,16 +86,6 @@ const keyDownListener = (e: { key: string }) => {
 </script>
 
 <style>
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.2s ease-out;
-}
-
-.modal-fade-enter-from,
-.modal-fade-leave-to {
-  opacity: 0;
-}
-
 .modal {
   position: fixed;
   max-width: 100%;

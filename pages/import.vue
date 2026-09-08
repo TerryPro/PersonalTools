@@ -24,18 +24,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <!-- ============ 导入 ============ -->
       <section id="import" class="mb-9 scroll-mt-20">
         <h2 class="mb-1 flex flex-row items-center gap-2.5 text-xl font-bold">
-          <span class="bg-accent inline-block size-2 rounded-full" />
+          <span class="inline-block size-2 rounded-full bg-accent" />
           {{ $t("pages.import.importTabHeading") }}
         </h2>
-        <span class="text-dim-3 mb-3 block text-sm">{{
+        <span class="mb-3 block text-sm text-dim-3">{{
           $t("pages.import.importTabSubtext")
         }}</span>
 
-        <div class="bg-elevation-1 border-elevation-2 rounded-xl border">
+        <div class="rounded-xl border border-elevation-2 bg-elevation-1">
           <!-- 部分导入 -->
           <div class="flex flex-row items-start gap-3.5 p-4">
             <div
-              class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+              class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
             >
               <ArrowDownTrayIcon class="size-5" />
             </div>
@@ -43,24 +43,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               <div class="text-[15px] font-semibold">
                 {{ $t("pages.import.importTabPartialHeading") }}
               </div>
-              <div class="text-dim-3 mt-0.5 text-[13px]">
+              <div class="mt-0.5 text-[13px] text-dim-3">
                 {{ $t("pages.import.importTabPartialSubtext") }}
               </div>
               <div class="mt-3 flex flex-row flex-wrap gap-2">
                 <button
-                  class="transition-button bg-elevation-1 bg-elevation-2-hover border-accent flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-2 font-semibold"
+                  class="transition-button bg-elevation-2-hover flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-2 font-semibold"
                   @click="importFromKanriBoard"
                 >
                   {{ $t("pages.import.importOptionKanri") }}
                 </button>
                 <button
-                  class="transition-button bg-elevation-1 bg-elevation-2-hover border-accent flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-2 font-semibold"
+                  class="transition-button bg-elevation-2-hover flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-2 font-semibold"
                   @click="importFromTrelloBoard"
                 >
                   {{ $t("pages.import.importOptionTrello") }}
                 </button>
                 <button
-                  class="transition-button bg-elevation-1 bg-elevation-2-hover border-accent flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-2 font-semibold"
+                  class="transition-button bg-elevation-2-hover flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-2 font-semibold"
                   @click="importFromGithubProject"
                 >
                   {{ $t("pages.import.importOptionGithub") }}
@@ -71,7 +71,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
           <!-- 完整导入 -->
           <div
-            class="border-elevation-2 flex flex-row items-start gap-3.5 border-t p-4"
+            class="flex flex-row items-start gap-3.5 border-t border-elevation-2 p-4"
           >
             <div
               class="grid size-9 shrink-0 place-items-center rounded-lg bg-red-500/15 text-red-500"
@@ -87,13 +87,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               </div>
               <div class="mt-3 flex flex-row flex-wrap gap-2">
                 <button
-                  class="transition-button bg-elevation-1 bg-elevation-2-hover border-accent flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-2 font-semibold"
+                  class="transition-button bg-elevation-2-hover flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-2 font-semibold"
                   @click="importFromKanriFull"
                 >
                   {{ $t("pages.import.importOptionKanri") }}
                 </button>
                 <button
-                  class="transition-button bg-elevation-1 bg-elevation-2-hover border-accent flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-2 font-semibold"
+                  class="transition-button bg-elevation-2-hover flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-2 font-semibold"
                   @click="importFromKanbanElectronFull"
                 >
                   {{ $t("pages.import.importOptionKanbanElectron") }}
@@ -107,15 +107,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <!-- ============ 导出 ============ -->
       <section id="export" class="mb-9 scroll-mt-20">
         <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
-          <span class="bg-accent inline-block size-2 rounded-full" />
+          <span class="inline-block size-2 rounded-full bg-accent" />
           {{ $t("pages.import.exportTabHeading") }}
         </h2>
 
-        <div class="bg-elevation-1 border-elevation-2 rounded-xl border">
+        <div class="rounded-xl border border-elevation-2 bg-elevation-1">
           <!-- 部分导出 -->
           <div class="flex flex-row items-start gap-3.5 p-4">
             <div
-              class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+              class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
             >
               <ViewColumnsIcon class="size-5" />
             </div>
@@ -123,12 +123,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               <div class="text-[15px] font-semibold">
                 {{ $t("pages.import.exportTabPartialHeading") }}
               </div>
-              <div class="text-dim-3 mt-0.5 text-[13px]">
+              <div class="mt-0.5 text-[13px] text-dim-3">
                 {{ $t("pages.import.exportTabPartialSubtext") }}
               </div>
               <DropdownMenuRoot>
                 <DropdownMenuTrigger
-                  class="transition-button bg-elevation-1 bg-elevation-2-hover border-accent mt-3 flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-2 font-semibold"
+                  class="transition-button bg-elevation-2-hover mt-3 flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-2 font-semibold"
                 >
                   {{ $t("pages.import.exportTabPartialSelectButton") }}
                 </DropdownMenuTrigger>
@@ -136,9 +136,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                   <DropdownMenuContent
                     align="start"
                     :side-offset="5"
-                    class="bg-elevation-1 border-elevation-2 w-96 rounded-md border p-2"
+                    class="w-96 rounded-md border border-elevation-2 bg-elevation-1 p-2"
                   >
-                    <DropdownMenuLabel class="text-dim-3 mb-1 px-2 text-sm">
+                    <DropdownMenuLabel class="mb-1 px-2 text-sm text-dim-3">
                       {{ $t("pages.import.exportTabPartialSelectPrompt") }}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
@@ -158,10 +158,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
           <!-- 完整导出 -->
           <div
-            class="border-elevation-2 flex flex-row items-start gap-3.5 border-t p-4"
+            class="flex flex-row items-start gap-3.5 border-t border-elevation-2 p-4"
           >
             <div
-              class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+              class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
             >
               <ArrowUpTrayIcon class="size-5" />
             </div>
@@ -169,11 +169,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               <div class="text-[15px] font-semibold">
                 {{ $t("pages.import.exportTabFullHeading") }}
               </div>
-              <div class="text-dim-3 mt-0.5 text-[13px]">
+              <div class="mt-0.5 text-[13px] text-dim-3">
                 {{ $t("pages.import.exportTabFullSubtext") }}
               </div>
               <button
-                class="transition-button bg-elevation-1 bg-elevation-2-hover border-accent mt-3 flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-2 font-semibold"
+                class="transition-button bg-elevation-2-hover mt-3 flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-2 font-semibold"
                 @click="exportJSON()"
               >
                 {{ $t("pages.import.exportTabFullButton") }}
@@ -189,7 +189,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 <script setup lang="ts">
 import type { Board, Column, Tag, Card } from "@/types/kanban-types";
 
-import { useTauriStore } from "@/stores/tauriStore";
+import { useBackupStore } from "@/stores/backup";
 import {
   kanbanElectronJsonSchema,
   kanriBoardSchema,
@@ -210,7 +210,7 @@ import { ZodError, z } from "zod";
 
 const router = useRouter();
 
-const store = useTauriStore().store;
+const backupStore = useBackupStore();
 const globalSettingsStore = useSettingsStore();
 const theme = useThemeStore();
 
@@ -219,7 +219,7 @@ const { t } = useI18n();
 const boards: Ref<Board[]> = ref([]);
 
 onMounted(async () => {
-  boards.value = ((await store.get("boards")) as Board[]) || [];
+  boards.value = await backupStore.getBoards();
 });
 
 const exportJSON = async () => {
@@ -234,47 +234,9 @@ const exportJSON = async () => {
     title: t("pages.import.exportFullJsonDialogTitle"),
   });
 
-  const savedBoards = await store.get("boards");
-  const boardSortingOption = await store.get("boardSortingOption");
-  const pins = await store.get("pins");
-  const reverseSorting = await store.get("reverseSorting");
-  const activeTheme = await store.get("activeTheme");
-  const colors = await store.get("colors");
-  const savedCustomTheme = await store.get("savedCustomTheme");
-  const themeOverrides = await store.get("themeOverrides");
-  const columnZoomLevel = await store.get("columnZoomLevel");
-  const lastInstalledVersion = await store.get("lastInstalledVersion");
-  const animationsEnabled = await store.get("animationsEnabled");
-  const defaultRelativeDueDatesEnabled = await store.get(
-    "defaultRelativeDueDatesEnabled"
-  );
-  const addToTopOfColumnButtonEnabled = await store.get(
-    "addToTopOfColumnButtonEnabled"
-  );
-  const displayColumnCardCountEnabled = await store.get(
-    "displayColumnCardCountEnabled"
-  );
+  const snapshot = await backupStore.exportFullState();
 
-  const fileContents = JSON.stringify(
-    {
-      activeTheme,
-      boardSortingOption,
-      boards: savedBoards,
-      pins,
-      colors,
-      columnZoomLevel,
-      lastInstalledVersion,
-      savedCustomTheme,
-      themeOverrides,
-      reverseSorting,
-      animationsEnabled,
-      defaultRelativeDueDatesEnabled,
-      addToTopOfColumnButtonEnabled,
-      displayColumnCardCountEnabled,
-    },
-    null,
-    2
-  );
+  const fileContents = JSON.stringify(snapshot, null, 2);
 
   if (filePath == null) return;
   await writeTextFile(filePath, fileContents);
@@ -370,33 +332,7 @@ const importFromKanriFull = async () => {
   }
   if (zodParsed === null) return;
 
-  store.set("boards", zodParsed.boards);
-  store.set("pins", zodParsed.pins);
-  store.set("colors", zodParsed.colors);
-  store.set("activeTheme", zodParsed.activeTheme);
-  store.set("columnZoomLevel", zodParsed.columnZoomLevel);
-  store.set("boardSortingOption", zodParsed.boardSortingOption);
-  store.set("savedCustomTheme", zodParsed.savedCustomTheme);
-  if (zodParsed.themeOverrides !== undefined && zodParsed.themeOverrides !== null) {
-    store.set("themeOverrides", zodParsed.themeOverrides);
-  }
-  store.set("lastInstalledVersion", zodParsed.lastInstalledVersion);
-  store.set("animationsEnabled", zodParsed.animationsEnabled);
-  if (zodParsed.defaultRelativeDueDatesEnabled !== undefined) {
-    store.set(
-      "defaultRelativeDueDatesEnabled",
-      zodParsed.defaultRelativeDueDatesEnabled
-    );
-  }
-  store.set("reverseSorting", zodParsed.reverseSorting);
-  store.set(
-    "addToTopOfColumnButtonEnabled",
-    zodParsed.addToTopOfColumnButtonEnabled
-  );
-  store.set(
-    "displayColumnCardCountEnabled",
-    zodParsed.displayColumnCardCountEnabled
-  );
+  await backupStore.importFullState(zodParsed);
 
   globalSettingsStore.loadSettings();
   theme.loadThemeSettings();
@@ -471,12 +407,7 @@ const importFromKanbanElectronFull = async () => {
     });
   });
 
-  store.set("boards", convertedBoards);
-  store.set("colors", zodParsed.colors);
-  store.set("activeTheme", zodParsed.activeTheme);
-  if (zodParsed.columnZoomLevel) {
-    store.set("columnZoomLevel", zodParsed.columnZoomLevel);
-  }
+  await backupStore.importElectronState(zodParsed, convertedBoards);
 
   globalSettingsStore.loadSettings();
 
@@ -499,7 +430,7 @@ const importFromKanriBoard = async () => {
 
   if (selected === null) return;
 
-  const convertedBoards: Array<Board> = (await store.get("boards")) || [];
+  const convertedBoards: Array<Board> = await backupStore.getBoards();
   if (typeof selected === "string") {
     const result = await kanriParse(selected);
 
@@ -559,9 +490,13 @@ const importFromKanriBoard = async () => {
 
   if (convertedBoards.length === 0) return;
 
-  await store.set("boards", convertedBoards);
+  await backupStore.setBoards(convertedBoards);
 
   await message(t("pages.import.importSuccessPartial"), { kind: "info" });
+
+  // Manual refresh: the raw store write does not update the Pinia boards state
+  // nor this page's export list, so reload to pick the imported boards up.
+  router.go(0);
 };
 
 const kanriParse = async (board: string) => {
@@ -624,7 +559,7 @@ const importFromTrelloBoard = async () => {
 
   if (selected === null || selected.length === 0) return;
 
-  const convertedBoards: Array<Board> = (await store.get("boards")) || [];
+  const convertedBoards: Array<Board> = await backupStore.getBoards();
   if (typeof selected === "string") {
     const result = await trelloParse(selected);
 
@@ -643,7 +578,7 @@ const importFromTrelloBoard = async () => {
 
   if (convertedBoards.length === 0) return;
 
-  await store.set("boards", convertedBoards);
+  await backupStore.setBoards(convertedBoards);
 
   await message(t("pages.import.importSuccessPartial"), { kind: "info" });
 
@@ -806,7 +741,7 @@ const importFromGithubProject = async () => {
     multiple: true,
   });
 
-  const convertedBoards: Array<Board> = (await store.get("boards")) || [];
+  const convertedBoards: Array<Board> = await backupStore.getBoards();
 
   if (selected === null) return;
 
@@ -886,7 +821,11 @@ const importFromGithubProject = async () => {
     convertedBoards.push(board);
   }
 
-  await store.set("boards", convertedBoards);
+  await backupStore.setBoards(convertedBoards);
   await message(t("pages.import.importSuccessGithub"), { kind: "info" });
+
+  // Manual refresh: the raw store write does not update the Pinia boards state
+  // nor this page's export list, so reload to pick the imported boards up.
+  router.go(0);
 };
 </script>

@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 <template>
   <DropdownMenuRoot>
-    <DropdownMenuTrigger asChild>
+    <DropdownMenuTrigger as-child>
       <slot name="trigger" />
     </DropdownMenuTrigger>
 

@@ -35,8 +35,8 @@ export const useContextMenuClasses = () => {
   });
 
   const contextMenuItemClass = computed(() => {
-    let itemClass =
-      "bg-elevation-2-hover flex w-full cursor-pointer flex-row items-center justify-between rounded-md  py-1.5 px-4";
+    const itemClass =
+      "bg-elevation-2-hover flex w-full cursor-pointer flex-row items-center justify-between rounded-md py-1.5 px-4";
 
     return itemClass;
   });

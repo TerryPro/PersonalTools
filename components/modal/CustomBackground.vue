@@ -45,14 +45,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 :src="customBg"
                 alt="bg image preview"
                 class="aspect-[16/10] h-auto w-56 rounded-md"
-              />
+              >
               <div class="img-overlay">
                 {{ $t("modals.customBackground.imageEdit") }}
               </div>
             </div>
             <button
               v-else
-              class="bg-elevation-2 bg-elevation-3-hover transition-button aspect-[16/10] w-56 rounded-md"
+              class="bg-elevation-3-hover transition-button aspect-[16/10] w-56 rounded-md bg-elevation-2"
               @click="getCustomBg"
             >
               {{ $t("modals.customBackground.imageAdd") }}
@@ -72,7 +72,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 max="20"
                 min="0"
                 type="range"
-              />
+              >
             </div>
           </section>
           <section
@@ -93,13 +93,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 max="100"
                 min="0"
                 type="range"
-              />
+              >
             </div>
           </section>
         </div>
         <button
           v-if="background.length > 0"
-          class="bg-elevation-2 bg-elevation-3-hover transition-button mt-8 flex flex-row gap-2 rounded-md px-4 py-1.5"
+          class="bg-elevation-3-hover transition-button mt-8 flex flex-row gap-2 rounded-md bg-elevation-2 px-4 py-1.5"
           @click="resetSettings()"
         >
           <XMarkIcon class="size-6" />

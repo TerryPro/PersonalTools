@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <Tooltip direction="top" :label="$t('components.kanban.zoomAdjustment.decreaseLevel')">
       <template #trigger>
         <button
-          class="bg-elevation-1 bg-elevation-2-hover transition-button border-elevation-2 rounded-l-2xl border-r px-3.5 py-2"
+          class="bg-elevation-2-hover transition-button rounded-l-2xl border-r border-elevation-2 bg-elevation-1 px-3.5 py-2"
           @click="decreaseZoomLevel"
         >
           <MagnifyingGlassMinusIcon class="size-5" />
@@ -33,7 +33,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <Tooltip direction="top" :label="$t('components.kanban.zoomAdjustment.reset')">
       <template #trigger>
         <button
-          class="bg-elevation-1 bg-elevation-2-hover transition-button border-elevation-2 px-3.5 py-1.5"
+          class="bg-elevation-2-hover transition-button border-elevation-2 bg-elevation-1 px-3.5 py-1.5"
           @click="resetZoomLevel"
         >
           {{ columnZoomLevel * 50 + 100 }}%
@@ -43,7 +43,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <Tooltip direction="top" :label="$t('components.kanban.zoomAdjustment.increaseLevel')">
       <template #trigger>
         <button
-          class="bg-elevation-1 bg-elevation-2-hover transition-button border-elevation-2 rounded-r-2xl border-l px-3.5 py-2"
+          class="bg-elevation-2-hover transition-button rounded-r-2xl border-l border-elevation-2 bg-elevation-1 px-3.5 py-2"
           @click="increaseZoomLevel"
         >
           <MagnifyingGlassPlusIcon class="size-5" />

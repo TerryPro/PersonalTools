@@ -53,7 +53,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         ref="titleInput"
         v-model="titleNew"
         v-focus
-        :v-disable-spellcheck="settings.disableSpellcheck"
+        v-disable-spellcheck="settings.disableSpellcheck"
         :class="[
           'text-no-overflow -m-2 mr-2 w-full rounded-sm border-2 border-dotted border-accent bg-elevation-2 px-2 text-lg font-bold outline-none',
           inputSizeClass,

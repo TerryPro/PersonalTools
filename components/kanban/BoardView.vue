@@ -111,7 +111,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         v-if="boardTitleEditing"
         v-focus
         :value="boardContent.title"
-        class="bg-elevation-2 border-accent text-no-overflow -ml-2 mb-1 mr-2 h-12 w-min rounded-sm border-2 border-dotted px-2 text-2xl font-bold outline-none"
+        class="text-no-overflow -ml-2 mb-1 mr-2 h-12 w-min rounded-sm border-2 border-dotted border-accent bg-elevation-2 px-2 text-2xl font-bold outline-none"
         maxlength="500"
         type="text"
         @blur="
@@ -128,7 +128,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         <div class="flex flex-row gap-2">
           <div v-if="!embedded" class="flex flex-row gap-2">
             <button
-              class="bg-elevation-1 bg-elevation-2-hover transition-button flex flex-row gap-1 rounded-md px-4 py-1"
+              class="bg-elevation-2-hover transition-button flex flex-row gap-1 rounded-md bg-elevation-1 px-4 py-1"
               @click="router.go(-1)"
             >
               <PhArrowBendUpLeft class="my-auto size-6" />
@@ -139,7 +139,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </div>
           <div class="flex flex-row gap-2">
             <button
-              class="bg-elevation-1 bg-elevation-2-hover transition-button flex flex-row gap-1 rounded-md px-4 py-1"
+              class="bg-elevation-2-hover transition-button flex flex-row gap-1 rounded-md bg-elevation-1 px-4 py-1"
               @click="showCustomBgModal = true"
             >
               <PhotoIcon class="my-auto size-6" />
@@ -150,7 +150,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </div>
           <div class="flex flex-row gap-2">
             <button
-              class="bg-elevation-1 bg-elevation-2-hover transition-button flex flex-row gap-1 rounded-md px-4 py-1"
+              class="bg-elevation-2-hover transition-button flex flex-row gap-1 rounded-md bg-elevation-1 px-4 py-1"
               @click="editTagModalVisible = true"
             >
               <PhHashStraight class="my-auto size-6" />
@@ -169,7 +169,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <Dropdown align="end">
             <template #trigger>
               <button
-              class="bg-elevation-1 bg-elevation-2-hover transition-button h-full rounded-md p-2"
+              class="bg-elevation-2-hover transition-button h-full rounded-md bg-elevation-1 p-2"
               @click.prevent
               >
               <EllipsisHorizontalIcon class="size-6" />
@@ -200,7 +200,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 <span class="text-dim-2"><PhExport class="size-5" /></span>
                 <span>{{ $t("pages.kanban.exportBoardAction") }}</span>
               </DropdownMenuItem>
-              <div class="border-elevation-3 my-1 border-t"/>
+              <div class="my-1 border-t border-elevation-3"/>
               <!-- Group 2: Pin/unpin -->
               <DropdownMenuItem
                 class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left"
@@ -213,7 +213,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 <span v-if="board.isPinned.value">{{ $t("pages.kanban.unpinBoardAction") }}</span>
                 <span v-else>{{ $t("pages.kanban.pinBoardAction") }}</span>
               </DropdownMenuItem>
-              <div class="border-elevation-3 my-1 border-t"/>
+              <div class="my-1 border-t border-elevation-3"/>
               <!-- Group 3: Danger zone -->
               <DropdownMenuItem
                 class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left text-red-500"
@@ -284,10 +284,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               </Draggable>
               <div class="pr-8">
                 <div
-                  class="nodrag bg-elevation-1 bg-elevation-2-hover mr-8 flex h-min cursor-pointer flex-row items-center gap-2 rounded-md p-2"
+                  class="nodrag bg-elevation-2-hover mr-8 flex h-min cursor-pointer flex-row items-center gap-2 rounded-md bg-elevation-1 p-2"
                   @click="board.addColumn()"
                 >
-                  <PlusIcon class="text-accent size-6" />
+                  <PlusIcon class="size-6 text-accent" />
                   <span :class="boardContent?.columns.length === 0 ? '' : 'hidden'"
                     >Add Column</span
                   >

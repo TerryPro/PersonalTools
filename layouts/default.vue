@@ -149,8 +149,9 @@ const cssVars = computed(() => {
 .default-layout {
   background-color: var(--bg-primary);
   color: var(--text);
-  transition: color 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-  transition: background-color 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  transition:
+    color 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67),
+    background-color 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
   overscroll-behavior: none;
 }
 

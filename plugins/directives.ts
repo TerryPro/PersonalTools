@@ -19,13 +19,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+function applySpellcheckSetting(el: HTMLElement, disabled: boolean) {
+  if (disabled) {
+    el.setAttribute("autocomplete", "off");
+    el.setAttribute("autocorrect", "off");
+    el.setAttribute("autocapitalize", "off");
+    el.setAttribute("spellcheck", "false");
+  } else {
+    el.removeAttribute("autocomplete");
+    el.removeAttribute("autocorrect");
+    el.removeAttribute("autocapitalize");
+    el.removeAttribute("spellcheck");
+  }
+}
+
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.directive("resizable", {
     mounted: function (el) {
-      el.addEventListener("input", function (e: any) { // TODO: fix types
-        e.target.style.height = "auto";
-        e.target.style.height =
-          (parseInt(e.target.scrollHeight) + 2).toString() + "px";
+      el.addEventListener("input", function (e: Event) {
+        const target = e.target as HTMLTextAreaElement;
+        target.style.height = "auto";
+        target.style.height = `${target.scrollHeight + 2}px`;
       });
     },
   });
@@ -37,11 +51,11 @@ export default defineNuxtPlugin((nuxtApp) => {
   });
 
   nuxtApp.vueApp.directive("disable-spellcheck", {
-    mounted: function (el) {
-      el.setAttribute("autocomplete", "off");
-      el.setAttribute("autocorrect", "off");
-      el.setAttribute("autocapitalize", "off");
-      el.setAttribute("spellcheck", "false");
+    mounted: function (el, binding) {
+      applySpellcheckSetting(el, binding.value);
+    },
+    updated: function (el, binding) {
+      applySpellcheckSetting(el, binding.value);
     },
   });
 });

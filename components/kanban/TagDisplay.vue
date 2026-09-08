@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 <template>
   <div
-    class="bg-elevation-3 rounded-xl px-2 py-0.5 text-xs"
+    class="rounded-xl bg-elevation-3 px-2 py-0.5 text-xs"
     :class="getTagTextColor"
     :style="props.tag.style"
   >

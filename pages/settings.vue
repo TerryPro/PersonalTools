@@ -38,17 +38,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <!-- ============ 外观 ============ -->
       <section id="appearance" class="lg:col-start-2 lg:row-span-3 lg:row-start-1">
         <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
-          <span class="bg-accent inline-block size-2 rounded-full" />
+          <span class="inline-block size-2 rounded-full bg-accent" />
           {{ $t("pages.settings.sectionAppearanceHeading") }}
         </h2>
 
         <!-- 主题选择 -->
         <div
           v-if="!theme.autoThemeEnabled"
-          class="bg-elevation-1 border-elevation-2 mb-4 rounded-xl border p-5"
+          class="mb-4 rounded-xl border border-elevation-2 bg-elevation-1 p-5"
         >
           <div
-            class="text-dim-3 mb-4 text-xs font-bold uppercase tracking-wide"
+            class="mb-4 text-xs font-bold uppercase tracking-wide text-dim-3"
           >
             {{ $t("pages.settings.sectionThemeHeading") }}
           </div>
@@ -102,7 +102,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             </button>
           </div>
           <button
-            class="text-dim-3 transition-button hover:text-dim-2 mt-4 cursor-pointer text-sm"
+            class="transition-button mt-4 cursor-pointer text-sm text-dim-3 hover:text-dim-2"
             @click="$router.go(0)"
           >
             {{ $t("pages.settings.colorResetText")
@@ -114,11 +114,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         </div>
 
         <!-- 跟随系统 + 自定义编辑器 -->
-        <div class="bg-elevation-1 border-elevation-2 rounded-xl border">
+        <div class="rounded-xl border border-elevation-2 bg-elevation-1">
           <div class="flex flex-row items-center justify-between gap-5 p-4">
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <ComputerDesktopIcon class="size-5" />
               </div>
@@ -139,11 +139,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
           <div
             v-if="themeEditorDisplayed"
-            class="border-elevation-2 border-t p-4"
+            class="border-t border-elevation-2 p-4"
           >
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <PaintBrushIcon class="size-5" />
               </div>
@@ -157,7 +157,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                     }}
                   </h3>
                   <button
-                    class="bg-elevation-1 bg-elevation-2-hover border-elevation-2 flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm"
+                    class="bg-elevation-2-hover flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-elevation-2 bg-elevation-1 px-3 py-1.5 text-sm"
                     @click="resetThemeColors"
                   >
                     <ArrowPathIcon class="size-4" />
@@ -175,19 +175,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 >
                   {{ $t("pages.settings.customThemeImportHeading") }}
                 </h3>
-                <span v-if="isCustomTheme" class="text-dim-2 text-[13px]">{{
+                <span v-if="isCustomTheme" class="text-[13px] text-dim-2">{{
                   $t("pages.settings.customThemeImportHeadingSubtext")
                 }}</span>
                 <div v-if="isCustomTheme" class="my-2 flex flex-row gap-2">
                   <button
-                    class="bg-elevation-1 bg-elevation-2-hover border-accent flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-1.5"
+                    class="bg-elevation-2-hover flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-1.5"
                     @click="importThemeFromJson"
                   >
                     <ArrowDownTrayIcon class="size-4" />
                     {{ $t("general.importAction") }}
                   </button>
                   <button
-                    class="bg-elevation-1 bg-elevation-2-hover border-accent flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted px-4 py-1.5"
+                    class="bg-elevation-2-hover flex cursor-pointer flex-row items-center gap-2 rounded-md border border-dotted border-accent bg-elevation-1 px-4 py-1.5"
                     @click="exportThemeToJson"
                   >
                     <ArrowUpTrayIcon class="size-4" />
@@ -203,15 +203,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <!-- ============ 看板 ============ -->
       <section id="board" class="lg:col-start-1 lg:row-start-1">
         <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
-          <span class="bg-accent inline-block size-2 rounded-full" />
+          <span class="inline-block size-2 rounded-full bg-accent" />
           {{ $t("pages.settings.preferencesHeading") }}
         </h2>
 
-        <div class="bg-elevation-1 border-elevation-2 rounded-xl border">
+        <div class="rounded-xl border border-elevation-2 bg-elevation-1">
           <div class="flex flex-row items-center justify-between gap-5 p-4">
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <MagnifyingGlassIcon class="size-5" />
               </div>
@@ -219,7 +219,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 <div class="text-[15px] font-semibold">
                   {{ $t("pages.settings.preferencesZoomHeading") }}
                 </div>
-                <div class="text-dim-3 mt-0.5 text-[13px]">
+                <div class="mt-0.5 text-[13px] text-dim-3">
                   {{ $t("pages.settings.preferencesZoomSubtext") }}
                 </div>
               </div>
@@ -228,11 +228,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </div>
 
           <div
-            class="border-elevation-2 flex flex-row items-center justify-between gap-5 border-t p-4"
+            class="flex flex-row items-center justify-between gap-5 border-t border-elevation-2 p-4"
           >
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <PlusCircleIcon class="size-5" />
               </div>
@@ -240,7 +240,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 <div class="text-[15px] font-semibold">
                   {{ $t("pages.settings.preferencesAddToTopButtonHeading") }}
                 </div>
-                <div class="text-dim-3 mt-0.5 text-[13px]">
+                <div class="mt-0.5 text-[13px] text-dim-3">
                   {{ $t("pages.settings.preferencesAddToTopButtonSubtext") }}
                 </div>
               </div>
@@ -255,11 +255,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </div>
 
           <div
-            class="border-elevation-2 flex flex-row items-center justify-between gap-5 border-t p-4"
+            class="flex flex-row items-center justify-between gap-5 border-t border-elevation-2 p-4"
           >
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <RectangleStackIcon class="size-5" />
               </div>
@@ -271,7 +271,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                     )
                   }}
                 </div>
-                <div class="text-dim-3 mt-0.5 text-[13px]">
+                <div class="mt-0.5 text-[13px] text-dim-3">
                   {{
                     $t(
                       "pages.settings.preferencesDisplayNumberOfCardsSubtext"
@@ -290,11 +290,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </div>
 
           <div
-            class="border-elevation-2 flex flex-row items-center justify-between gap-5 border-t p-4"
+            class="flex flex-row items-center justify-between gap-5 border-t border-elevation-2 p-4"
           >
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <CalendarIcon class="size-5" />
               </div>
@@ -306,7 +306,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                     )
                   }}
                 </div>
-                <div class="text-dim-3 mt-0.5 text-[13px]">
+                <div class="mt-0.5 text-[13px] text-dim-3">
                   {{
                     $t(
                       "pages.settings.preferencesDefaultRelativeDueDatesSubtext"
@@ -329,26 +329,26 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <!-- ============ 通用 ============ -->
       <section id="general" class="lg:col-start-1 lg:row-start-2">
         <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
-          <span class="bg-accent inline-block size-2 rounded-full" />
+          <span class="inline-block size-2 rounded-full bg-accent" />
           {{ $t("pages.settings.miscellaneousHeading") }}
         </h2>
 
-        <div class="bg-elevation-1 border-elevation-2 rounded-xl border">
+        <div class="rounded-xl border border-elevation-2 bg-elevation-1">
           <div class="flex flex-row items-center justify-between gap-5 p-4">
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <GlobeAltIcon class="size-5" />
               </div>
               <div>
                 <div class="text-[15px] font-semibold">
                   {{ $t("pages.settings.languageSelectorHeading") }}
-                  <span class="text-dim-3 text-sm">{{
+                  <span class="text-sm text-dim-3">{{
                     locale != "en" ? "(Language)" : ""
                   }}</span>
                 </div>
-                <div class="text-dim-3 mt-0.5 text-[13px]">
+                <div class="mt-0.5 text-[13px] text-dim-3">
                   {{ $t("pages.settings.languageSelectorSubtext") }}
                 </div>
               </div>
@@ -357,11 +357,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </div>
 
           <div
-            class="border-elevation-2 flex flex-row items-center justify-between gap-5 border-t p-4"
+            class="flex flex-row items-center justify-between gap-5 border-t border-elevation-2 p-4"
           >
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <SparklesIcon class="size-5" />
               </div>
@@ -369,7 +369,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 <div class="text-[15px] font-semibold">
                   {{ $t("pages.settings.miscellaneousAnimationsHeading") }}
                 </div>
-                <div class="text-dim-3 mt-0.5 text-[13px]">
+                <div class="mt-0.5 text-[13px] text-dim-3">
                   {{ $t("pages.settings.miscellaneousAnimationsSubtext") }}
                 </div>
               </div>
@@ -384,11 +384,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </div>
 
           <div
-            class="border-elevation-2 flex flex-row items-center justify-between gap-5 border-t p-4"
+            class="flex flex-row items-center justify-between gap-5 border-t border-elevation-2 p-4"
           >
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <LanguageIcon class="size-5" />
               </div>
@@ -396,7 +396,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 <div class="text-[15px] font-semibold">
                   {{ $t("pages.settings.miscellaneousDisableSpellcheckHeading") }}
                 </div>
-                <div class="text-dim-3 mt-0.5 text-[13px]">
+                <div class="mt-0.5 text-[13px] text-dim-3">
                   {{ $t("pages.settings.miscellaneousDisableSpellcheckSubtext") }}
                 </div>
               </div>
@@ -411,11 +411,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </div>
 
           <div
-            class="border-elevation-2 flex flex-row items-center justify-between gap-5 border-t p-4"
+            class="flex flex-row items-center justify-between gap-5 border-t border-elevation-2 p-4"
           >
             <div class="flex flex-row items-start gap-3.5">
               <div
-                class="bg-elevation-2 text-dim-1 grid size-9 shrink-0 place-items-center rounded-lg"
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-elevation-2 text-dim-1"
               >
                 <BoltIcon class="size-5" />
               </div>
@@ -423,7 +423,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 <div class="text-[15px] font-semibold">
                   {{ $t("pages.settings.miscellaneousAutostartHeading") }}
                 </div>
-                <div class="text-dim-3 mt-0.5 text-[13px]">
+                <div class="mt-0.5 text-[13px] text-dim-3">
                   {{ $t("pages.settings.miscellaneousAutostartSubtext") }}
                 </div>
               </div>
@@ -442,7 +442,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <!-- ============ 数据 ============ -->
       <section id="data" class="lg:col-start-1 lg:row-start-3">
         <h2 class="mb-3 flex flex-row items-center gap-2.5 text-xl font-bold">
-          <span class="bg-accent inline-block size-2 rounded-full" />
+          <span class="inline-block size-2 rounded-full bg-accent" />
           {{ $t("pages.settings.sectionDataHeading") }}
         </h2>
 
@@ -459,7 +459,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               <div class="text-[15px] font-semibold text-red-500">
                 {{ $t("pages.settings.miscellaneousDeleteAllDataHeading") }}
               </div>
-              <div class="text-dim-3 mt-0.5 text-[13px]">
+              <div class="mt-0.5 text-[13px] text-dim-3">
                 <span class="font-semibold text-red-500">{{
                   $t("pages.settings.miscellaneousDeleteAllDataSubtextRed")
                 }}</span>

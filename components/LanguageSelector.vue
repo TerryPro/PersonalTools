@@ -22,7 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 <template>
   <ComboboxRoot v-model="selectedLocale" class="relative">
     <ComboboxAnchor
-      class="bg-elevation-1 border-elevation-1 hover:bg-elevation-2 data-[placeholder]:text-primary-light inline-flex h-[35px] min-w-[240px] cursor-pointer items-center justify-between gap-[5px] rounded px-[15px]"
+      class="data-[placeholder]:text-primary-light inline-flex h-[35px] min-w-[240px] cursor-pointer items-center justify-between gap-[5px] rounded border-elevation-1 bg-elevation-1 px-[15px] hover:bg-elevation-2"
     >
       <ComboboxTrigger
         class="flex w-full flex-row items-center justify-between"
@@ -36,14 +36,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <ComboboxContent :class="tooltipClass">
       <ComboboxViewport class="p-[5px]">
         <ComboboxEmpty
-          class="text-elevation-3 py-2 text-center text-xs font-medium"
+          class="py-2 text-center text-xs font-medium text-elevation-3"
         />
 
         <ComboboxGroup>
           <ComboboxItem
             v-for="locale in locales"
             :key="locale.code"
-            class="text-primary-light data-[disabled]:text-elevation-3 data-[highlighted]:bg-primary-dark data-[highlighted]:text-primary-light bg-elevation-2-hover relative flex h-[25px] cursor-pointer select-none items-center rounded-[3px] pl-[25px] pr-[35px] leading-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none"
+            class="text-primary-light data-[highlighted]:bg-primary-dark data-[highlighted]:text-primary-light bg-elevation-2-hover relative flex h-[25px] cursor-pointer select-none items-center rounded-[3px] pl-[25px] pr-[35px] leading-none data-[disabled]:pointer-events-none data-[disabled]:text-elevation-3 data-[highlighted]:outline-none"
             :value="locale.code"
           >
             <ComboboxItemIndicator

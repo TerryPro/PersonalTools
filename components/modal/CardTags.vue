@@ -27,7 +27,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             <h1 class="pointer-events-auto pr-5 text-2xl font-bold">
               {{ $t("modals.cardTags.title") }}
             </h1>
-            <p class="text-dim-3 inline-block max-w-xl text-sm">
+            <p class="inline-block max-w-xl text-sm text-dim-3">
               {{ $t("modals.cardTags.description") }}
             </p>
           </div>

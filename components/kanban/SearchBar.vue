@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 <template>
   <div
-    class="bg-elevation-1 relative flex flex-row items-center gap-2 rounded-md px-2"
+    class="relative flex flex-row items-center gap-2 rounded-md bg-elevation-1 px-2"
   >
     <span v-if="searchFilter" class="shrink-0 p-1 font-bold">{{
       searchFilter
@@ -27,16 +27,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <input
       v-model="displayModel"
       :placeholder="$t('components.kanban.searchBar.placeholder')"
-      class="bg-elevation-1 w-full flex-1 py-1 focus:outline-none"
+      class="w-full flex-1 bg-elevation-1 py-1 focus:outline-none"
       type="text"
       @focus="showSuggestions = true"
       @blur="handleBlur"
       @input="handleInput"
       @keydown.backspace="handleBackspace"
-    />
+    >
     <button
       v-if="(displayModel?.length ?? 0) > 0 || searchFilter"
-      class="bg-elevation-1 bg-elevation-2-hover absolute right-2 shrink-0 rounded-md p-1"
+      class="bg-elevation-2-hover absolute right-2 shrink-0 rounded-md bg-elevation-1 p-1"
       @click="clearSearch"
     >
       <XMarkIcon class="size-4 shrink-0 grow-0" />
@@ -44,10 +44,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <PhMagnifyingGlass v-else class="size-4" />
     <div
       v-if="showSuggestions"
-      class="bg-elevation-1 border-elevation-2 absolute left-0 top-10 z-10 -mr-2 w-full rounded-md border p-2"
+      class="absolute left-0 top-10 z-10 -mr-2 w-full rounded-md border border-elevation-2 bg-elevation-1 p-2"
     >
       <div>
-        <span class="text-dim-3 text-sm">search options</span>
+        <span class="text-sm text-dim-3">search options</span>
       </div>
       <ul class="mt-0.5 text-sm">
         <li

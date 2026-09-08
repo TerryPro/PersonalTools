@@ -64,6 +64,7 @@ export const useSettingsStore = defineStore("settings", {
       const autostartEnabledSaved: boolean = await isEnabled() ?? false;
 
       const columnZoomLevelSaved: number = await store.get("columnZoomLevel") ?? 0;
+      const disableSpellcheckSaved: boolean = await store.get("disableSpellcheck") ?? false;
       const addToTopOfColumnButtonEnabledSaved: boolean = await store.get("addToTopOfColumnButtonEnabled") ?? false;
       const displayColumnCardCountEnabledSaved: boolean = await store.get("displayColumnCardCountEnabled") ?? false;
       const defaultRelativeDueDatesEnabledSaved: boolean = await store.get("defaultRelativeDueDatesEnabled") ?? false;
@@ -78,6 +79,7 @@ export const useSettingsStore = defineStore("settings", {
       this.animationsEnabled = animationsEnabledSaved;
       this.autostartEnabled = autostartEnabledSaved;
       this.columnZoomLevel = columnZoomLevelSaved;
+      this.disableSpellcheck = disableSpellcheckSaved;
       this.addToTopOfColumnButtonEnabled = addToTopOfColumnButtonEnabledSaved;
       this.displayColumnCardCountEnabled = displayColumnCardCountEnabledSaved;
       this.defaultRelativeDueDatesEnabled = defaultRelativeDueDatesEnabledSaved;

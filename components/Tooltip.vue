@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 <template>
   <TooltipProvider>
     <TooltipRoot :delay-duration="200">
-      <TooltipTrigger asChild :aria-label="label">
+      <TooltipTrigger as-child :aria-label="label">
         <slot name="trigger" />
       </TooltipTrigger>
       <TooltipPortal to=".default-layout">

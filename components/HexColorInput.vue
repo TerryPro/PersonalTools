@@ -21,11 +21,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 <template>
   <input
     v-model="inputValue"
-    class="bg-elevation-1 w-24 rounded-md px-2"
+    class="w-24 rounded-md bg-elevation-1 px-2"
     type="text"
     maxlength="7"
     @input="onInput"
-  />
+  >
 </template>
 
 <script setup lang="ts">

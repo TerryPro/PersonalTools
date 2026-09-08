@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 <template>
   <div
-    class="bg-primary-darker border-elevation-1 flex h-10 shrink-0 select-none items-center border-b"
+    class="flex h-10 shrink-0 select-none items-center border-b border-elevation-1 bg-primary-darker"
     data-tauri-drag-region
   >
     <!-- macOS: reserve space for the native traffic light buttons -->
@@ -37,7 +37,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     >
       <IconKanri class="text-accent-logo-icon pointer-events-none size-5" />
       <span
-        class="text-dim-2 pointer-events-none text-sm font-semibold tracking-wide"
+        class="pointer-events-none text-sm font-semibold tracking-wide text-dim-2"
         data-tauri-drag-region
       >
         Kanri
@@ -49,7 +49,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
     <!-- Help & About (globally available) -->
     <button
-      class="text-dim-2 bg-elevation-2-hover transition-button flex h-full w-11 shrink-0 items-center justify-center"
+      class="bg-elevation-2-hover transition-button flex h-full w-11 shrink-0 items-center justify-center text-dim-2"
       type="button"
       :aria-label="$t('components.sidebar.help')"
       :title="$t('components.sidebar.help')"
@@ -61,7 +61,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <!-- Window controls (Windows / Linux only) -->
     <div v-if="showControls" class="flex h-full items-stretch">
       <button
-        class="text-dim-2 bg-elevation-2-hover transition-button flex h-full w-11 items-center justify-center"
+        class="bg-elevation-2-hover transition-button flex h-full w-11 items-center justify-center text-dim-2"
         type="button"
         :aria-label="$t('components.titlebar.minimize')"
         :title="$t('components.titlebar.minimize')"
@@ -70,7 +70,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         <PhMinus class="size-4" />
       </button>
       <button
-        class="text-dim-2 bg-elevation-2-hover transition-button flex h-full w-11 items-center justify-center"
+        class="bg-elevation-2-hover transition-button flex h-full w-11 items-center justify-center text-dim-2"
         type="button"
         :aria-label="
           isMaximized
@@ -88,7 +88,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         <PhSquare v-else class="size-[0.85rem]" />
       </button>
       <button
-        class="text-dim-2 transition-button flex h-full w-11 items-center justify-center hover:bg-red-500 hover:text-white"
+        class="transition-button flex h-full w-11 items-center justify-center text-dim-2 hover:bg-red-500 hover:text-white"
         type="button"
         :aria-label="$t('components.titlebar.close')"
         :title="$t('components.titlebar.close')"

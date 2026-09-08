@@ -21,7 +21,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { defineStore } from 'pinia'
 import { dark, professionalLight } from '@/utils/themes';
-import type { Theme, ThemeIdentifiers } from '@/types/kanban-types';
+import { withDerivedColors } from '@/utils/colorUtils';
+import type { ResolvedTheme, Theme, ThemeIdentifiers } from '@/types/kanban-types';
 
 export type BuiltinThemeId = Exclude<ThemeIdentifiers, "auto" | "custom">;
 export type ThemeOverrides = Partial<Record<BuiltinThemeId, Theme>>;
@@ -29,7 +30,7 @@ export type ThemeOverrides = Partial<Record<BuiltinThemeId, Theme>>;
 export const useThemeStore = defineStore("theme", {
   state: () => {
     const activeTheme = ref("dark");
-    const colors: Ref<Theme | null> = ref(null);
+    const colors: Ref<ResolvedTheme | null> = ref(null);
     const savedCustomTheme: Ref<Theme | null> = ref(null);
     const autoThemeEnabled = ref(false);
     const themeOverrides: Ref<ThemeOverrides> = ref({});
@@ -41,7 +42,7 @@ export const useThemeStore = defineStore("theme", {
       const store = useTauriStore().store;
 
       const activeThemeSaved: string = await store.get("activeTheme") ?? "dark";
-      const colorsSaved: Theme | null = await store.get("colors") ?? dark;
+      const colorsSaved: ResolvedTheme = withDerivedColors(await store.get("colors") ?? dark);
       const savedCustomThemeSaved: Theme | null = await store.get("savedCustomTheme") ?? null;
       const themeOverridesSaved: ThemeOverrides = await store.get("themeOverrides") ?? {};
       const autoThemeEnabledSaved: boolean = await store.get("activeTheme") === "auto" ? true : false;
@@ -54,9 +55,10 @@ export const useThemeStore = defineStore("theme", {
     },
 
     // Effective palette of a built-in theme: stock palette merged with user overrides
-    getEffectiveThemeColors(themeId: BuiltinThemeId): Theme {
-      // always hand out a copy so reactive consumers cannot mutate the stock palette
-      return this.themeOverrides[themeId] ?? { ...themes[themeId] };
+    getEffectiveThemeColors(themeId: BuiltinThemeId): ResolvedTheme {
+      // withDerivedColors spreads into a new object, so reactive consumers
+      // can never mutate the stock palette or persisted overrides
+      return withDerivedColors(this.themeOverrides[themeId] ?? themes[themeId]);
     },
 
     async setTheme(theme: string, colors: Theme | null = null) {
@@ -71,12 +73,12 @@ export const useThemeStore = defineStore("theme", {
       await store.set("activeTheme", theme);
 
       if (colors) {
-        this.colors = colors;
-        await store.set("colors", colors);
+        this.colors = withDerivedColors(colors);
+        await store.set("colors", this.colors);
 
         if (theme === "custom") {
-          this.savedCustomTheme = colors;
-          await store.set("savedCustomTheme", colors);
+          this.savedCustomTheme = this.colors;
+          await store.set("savedCustomTheme", this.colors);
         }
       }
     },
@@ -99,12 +101,13 @@ export const useThemeStore = defineStore("theme", {
     async setThemeOverride(themeId: BuiltinThemeId, colors: Theme) {
       const store = useTauriStore().store;
 
-      this.themeOverrides = { ...this.themeOverrides, [themeId]: colors };
+      const resolved = withDerivedColors(colors);
+      this.themeOverrides = { ...this.themeOverrides, [themeId]: resolved };
       await store.set("themeOverrides", this.themeOverrides);
 
       if (this.activeTheme === themeId) {
-        this.colors = colors;
-        await store.set("colors", colors);
+        this.colors = resolved;
+        await store.set("colors", resolved);
       }
     },
 
@@ -118,7 +121,7 @@ export const useThemeStore = defineStore("theme", {
       await store.set("themeOverrides", nextOverrides);
 
       if (this.activeTheme === themeId) {
-        this.colors = { ...themes[themeId] };
+        this.colors = withDerivedColors(themes[themeId]);
         await store.set("colors", this.colors);
       }
     },
@@ -127,7 +130,7 @@ export const useThemeStore = defineStore("theme", {
     async resetCustomTheme() {
       const store = useTauriStore().store;
 
-      const preset: Theme = { ...professionalLight };
+      const preset: ResolvedTheme = withDerivedColors(professionalLight);
       this.savedCustomTheme = preset;
       await store.set("savedCustomTheme", preset);
 

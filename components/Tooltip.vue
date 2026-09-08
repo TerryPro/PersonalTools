@@ -35,13 +35,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 </template>
 
 <script setup lang="ts">
-withDefaults(
+const props = withDefaults(
   defineProps<{
     direction?: "right" | "top" | "bottom" | "left";
     label: string;
+    multiline?: boolean;
   }>(),
   {
     direction: "right",
+    multiline: false,
   }
 );
 
@@ -49,7 +51,13 @@ const globalSettingsStore = useSettingsStore();
 
 const tooltipClass = computed(() => {
   let tooltipClasses =
-    "border-elevation-1 bg-primary-darker z-[999999999] select-none rounded-[4px] border px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]";
+    "border-elevation-1 bg-primary-darker z-[999999999] select-none rounded-[4px] border px-[15px] py-[10px] text-[15px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]";
+
+  // Single-line tooltips keep the compact leading; multiline tooltips (e.g. card
+  // description previews) wrap within a capped width and preserve line breaks.
+  tooltipClasses += props.multiline
+    ? " max-w-sm break-words whitespace-pre-wrap text-left leading-normal"
+    : " leading-none";
 
   if (globalSettingsStore.animationsEnabled !== false) {
     tooltipClasses +=

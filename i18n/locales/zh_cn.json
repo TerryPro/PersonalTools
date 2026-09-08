@@ -258,7 +258,41 @@
       "newColumn": "新建列表",
       "createBoardAction": "创建看板",
       "boardNameEmptyError": "看板名称不能为空",
-      "placeholder": "输入看板名称"
+      "placeholder": "输入看板名称",
+      "templateLabel": "选择模板",
+      "templates": {
+        "basic": "基础看板",
+        "project": "项目管理",
+        "bug": "缺陷追踪",
+        "content": "内容日历",
+        "sales": "销售管道",
+        "gtd": "个人 GTD",
+        "example": "示例看板"
+      },
+      "templateColumns": {
+        "todo": "待办",
+        "doing": "进行中",
+        "inProgress": "进行中",
+        "done": "已完成",
+        "backlog": "待办池",
+        "review": "评审中",
+        "toReproduce": "待复现",
+        "fixed": "已修复",
+        "verified": "已验证",
+        "ideas": "选题",
+        "drafting": "草稿",
+        "published": "已发布",
+        "lead": "线索",
+        "contacted": "已接洽",
+        "proposal": "方案报价",
+        "negotiation": "谈判中",
+        "won": "已成交",
+        "lost": "已流失",
+        "inbox": "收集箱",
+        "next": "下一步",
+        "waiting": "等待中",
+        "someday": "将来/也许"
+      }
     },
     "renameBoard": {
       "title": "重命名看板",

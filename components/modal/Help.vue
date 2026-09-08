@@ -31,7 +31,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             @click="$emit('closeModal')"
           />
         </div>
-        <h2 class="text-md text-dim-3 mb-4">
+        <h2 class="text-md mb-4 text-dim-3">
           {{ $t("modals.help.resources") }}
         </h2>
         <h3 class="mb-2 text-xl font-bold">
@@ -41,7 +41,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <li>
             <kbd
               v-if="osType === 'darwin'"
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-2 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-2 font-mono"
             >
               <svg
                 class="size-3 shrink-0"
@@ -62,13 +62,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             </kbd>
             <kbd
               v-else
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               {{ $t("modals.help.ctrlKey") }}
             </kbd>
             +
             <kbd
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               b
             </kbd>
@@ -77,7 +77,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <li>
             <kbd
               v-if="osType === 'darwin'"
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-2 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-2 font-mono"
             >
               <svg
                 class="size-3 shrink-0"
@@ -98,13 +98,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             </kbd>
             <kbd
               v-else
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               {{ $t("modals.help.ctrlKey") }}
             </kbd>
             +
             <kbd
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               d
             </kbd>
@@ -113,7 +113,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <li>
             <kbd
               v-if="osType === 'darwin'"
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-2 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-2 font-mono"
             >
               <svg
                 class="size-3 shrink-0"
@@ -134,13 +134,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             </kbd>
             <kbd
               v-else
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               {{ $t("modals.help.ctrlKey") }}
             </kbd>
             +
             <kbd
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               t
             </kbd>
@@ -149,7 +149,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <li>
             <kbd
               v-if="osType === 'darwin'"
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-2 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-2 font-mono"
             >
               <svg
                 class="size-3 shrink-0"
@@ -170,13 +170,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             </kbd>
             <kbd
               v-else
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               {{ $t("modals.help.ctrlKey") }}
             </kbd>
             +
             <kbd
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               n
             </kbd>
@@ -185,7 +185,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <li>
             <kbd
               v-if="osType === 'darwin'"
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-2 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-2 font-mono"
             >
               <svg
                 class="size-3 shrink-0"
@@ -206,14 +206,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             </kbd>
             <kbd
               v-else
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               {{ $t("modals.help.ctrlKey") }}
             </kbd>
             +
             <kbd
               v-if="osType === 'darwin'"
-              class="inline-flex min-h-[30px] min-w-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+              class="kbd-key min-w-[30px] px-1.5 font-mono"
             >
               <svg
                 class="size-3 shrink-0"
@@ -233,18 +233,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             </kbd>
             <kbd
               v-else
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               alt
             </kbd>
             +
             <kbd
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               &lt;
             </kbd>
             <kbd
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               &gt;
             </kbd>
@@ -253,7 +253,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <li>
             <kbd
               v-if="osType === 'darwin'"
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-2 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-2 font-mono"
             >
               <svg
                 class="size-3 shrink-0"
@@ -274,18 +274,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             </kbd>
             <kbd
               v-else
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               {{ $t("modals.help.ctrlKey") }}
             </kbd>
             +
             <kbd
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               +
             </kbd>
             <kbd
-              class="inline-flex min-h-[30px] items-center justify-center rounded-md border border-gray-200 bg-white px-1.5 py-1 font-mono text-sm text-gray-800 shadow-[0px_2px_0px_0px_rgba(0,0,0,0.08)] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)]"
+              class="kbd-key px-1.5 font-mono"
             >
               -
             </kbd>
@@ -299,7 +299,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <a
             href="https://www.kanriapp.com/getting-started/faq"
             target="_blank"
-            class="border-elevation-3 bg-elevation-3-hover flex flex-row items-center gap-2 rounded-md border px-4 py-1.5 transition-colors duration-300"
+            class="bg-elevation-3-hover flex flex-row items-center gap-2 rounded-md border border-elevation-3 px-4 py-1.5 transition-colors duration-300"
           >
             <BookOpenIcon class="size-6" />
             {{ $t("modals.help.docs") }}
@@ -307,7 +307,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <a
             href="https://github.com/trobonox/kanri/issues"
             target="_blank"
-            class="border-elevation-3 bg-elevation-3-hover flex flex-row items-center gap-2 rounded-md border px-4 py-1.5 transition-colors duration-300"
+            class="bg-elevation-3-hover flex flex-row items-center gap-2 rounded-md border border-elevation-3 px-4 py-1.5 transition-colors duration-300"
           >
             <IconGithub class="size-6" />
             {{ $t("modals.help.github") }}
@@ -315,7 +315,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <a
             href="https://discord.gg/AVqHrvxB9C"
             target="_blank"
-            class="border-elevation-3 bg-elevation-3-hover flex flex-row items-center gap-2 rounded-md border px-4 py-1.5 transition-colors duration-300"
+            class="bg-elevation-3-hover flex flex-row items-center gap-2 rounded-md border border-elevation-3 px-4 py-1.5 transition-colors duration-300"
           >
             <IconDiscord class="size-6" />
             {{ $t("modals.help.discord") }}
@@ -325,16 +325,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           {{ $t("modals.help.creditsTitle") }}
         </h3>
         <div class="block max-w-2xl">
-          <p class="text-dim-2 text-sm">
+          <p class="text-sm text-dim-2">
             {{ $t("modals.help.creditsText1") }}
-            <br />
+            <br >
           </p>
-          <p class="text-dim-2 text-sm">
+          <p class="text-sm text-dim-2">
             {{ $t("modals.help.creditsText2") }}
           </p>
         </div>
         <p class="mb-2 pt-2">
-          {{ $t("modals.help.copyrights", { email: "hello@trobo.dev" }) }}<br />
+          {{ $t("modals.help.copyrights", { email: "hello@trobo.dev" }) }}<br >
           <span class="text-lg font-bold">Kanri </span>
           <span class="text-accent-lighter">
             {{
@@ -347,7 +347,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           </span>
           -
           <nuxt-link
-            class="text-accent text-accent-darker-hover"
+            class="text-accent-darker-hover text-accent"
             to="/licenses"
             @click="$emit('closeModal')"
           >
@@ -381,5 +381,23 @@ defineEmits<{
 ul {
   list-style-type: circle;
   list-style-position: inside;
+}
+
+/* themed keycap for shortcut badges: follows the active theme via CSS vars
+   instead of hardcoded gray/white + Tailwind dark: variants */
+.kbd-key {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  border: 1px solid var(--elevation-3);
+  background-color: var(--elevation-2);
+  color: var(--text);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  box-shadow: 0 2px 0 0 var(--elevation-3);
 }
 </style>

@@ -33,14 +33,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           />
         </div>
         <section id="inputs" class="mt-4 flex flex-col">
-          <label class="text-medium text-dim-1 mb-2 text-lg" for="boardName">{{
+          <label class="text-medium mb-2 text-lg text-dim-1" for="boardName">{{
             $t("modals.newBoard.name")
           }}</label>
           <input
             id="boardName"
             ref="boardNameInput"
             v-model="newBoardName"
-            class="placeholder:text-dim-3-placeholder bg-elevation-2 border-elevation-3 border-accent-focus h-10 max-w-80 rounded-md border p-2 transition-colors duration-300 focus:border-2 focus:border-dotted focus:outline-none"
+            class="placeholder:text-dim-3-placeholder border-accent-focus h-10 max-w-80 rounded-md border border-elevation-3 bg-elevation-2 p-2 transition-colors duration-300 focus:border-2 focus:border-dotted focus:outline-none"
             maxlength="500"
             :placeholder="$t('modals.newBoard.placeholder')"
             type="text"
@@ -51,25 +51,36 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             {{ $t("modals.newBoard.boardNameEmptyError") }}
           </p>
 
-          <div class="mt-3 flex flex-row gap-4">
-            <SwitchRoot
-              v-model:checked="exampleColumns"
-              class="bg-elevation-2 bg-accent-checked relative flex h-[24px] w-[42px] cursor-pointer rounded-full shadow-sm focus-within:outline focus-within:outline-black"
+        </section>
+        <section class="mt-4">
+          <label class="text-medium mb-2 block text-lg text-dim-1">
+            {{ $t("modals.newBoard.templateLabel") }}
+          </label>
+          <div class="flex max-w-2xl flex-row gap-2 overflow-x-auto pb-1">
+            <button
+              v-for="option in templateOptions"
+              :key="option.id"
+              type="button"
+              class="flex min-w-40 shrink-0 flex-col gap-0.5 rounded-md border p-2 text-left transition-colors"
+              :class="
+                selectedTemplateId === option.id
+                  ? 'border-accent bg-elevation-2'
+                  : 'border-elevation-3 bg-elevation-1 hover:bg-elevation-2'
+              "
+              @click="selectTemplate(option.tpl)"
             >
-              <SwitchThumb
-                class="bg-button-text my-auto block size-[18px] translate-x-0.5 rounded-full shadow-sm transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]"
-              />
-            </SwitchRoot>
-            <p>{{ $t("modals.newBoard.exampleColumns") }}</p>
+              <span class="font-semibold">{{ option.name }}</span>
+              <span class="text-xs text-dim-2">{{ option.description }}</span>
+            </button>
           </div>
         </section>
-        <section v-if="!exampleColumns" class="mt-6">
+        <section class="mt-6">
           <div class="mb-2 flex items-center gap-2">
-            <h2 class="text-medium text-dim-1 text-lg">
+            <h2 class="text-medium text-lg text-dim-1">
               {{ $t("modals.newBoard.columns") }}
             </h2>
             <div
-              class="bg-accent text-buttons flex cursor-pointer items-center justify-center rounded-full p-1 text-center transition-colors"
+              class="flex cursor-pointer items-center justify-center rounded-full bg-accent p-1 text-center text-buttons transition-colors hover:bg-accent-darker"
               @click="addColumnAndScrollToEnd()"
             >
               <PhPlus class="size-4" />
@@ -79,11 +90,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             <div
               v-for="(column, index) in columns"
               :key="column.id"
-              class="bg-elevation-2 column flex flex-row items-center gap-2 rounded-lg p-2"
+              class="column flex flex-row items-center gap-2 rounded-lg bg-elevation-2 p-2"
             >
               <input
                 v-model="column.title"
-                class="bg-elevation-3 text-normal w-32 text-ellipsis rounded-md border-none px-2 py-1 focus:outline-none"
+                class="w-32 text-ellipsis rounded-md border-none bg-elevation-3 px-2 py-1 text-normal focus:outline-none"
                 type="text"
               >
               <PhTrash
@@ -105,7 +116,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             {{ $t("general.cancelAction") }}
           </button>
           <button
-            class="bg-accent text-buttons transition-button rounded-md px-4 py-2"
+            class="transition-button rounded-md bg-accent px-4 py-2 text-buttons hover:bg-accent-darker"
             type="submit"
           >
             {{ $t("modals.newBoard.createBoardAction") }}
@@ -126,7 +137,7 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { PhPlus, PhTrash } from "@phosphor-icons/vue";
 import { useI18n } from "vue-i18n";
 
-import { exampleColumns as staticExampleColumns } from "~/utils/exampleData";
+import { boardTemplates, type BoardTemplate } from "~/utils/boardTemplates";
 
 const emit = defineEmits<{
   (e: "closeModal"): void;
@@ -134,12 +145,44 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
+// Builds fresh, editable columns (with new IDs) from a board template. Column
+// titles are localized via i18n; the example template also seeds sample cards.
+const buildColumnsFromTemplate = (template: BoardTemplate): Array<Column> =>
+  template.columnKeys.map((key, index) => ({
+    id: generateUniqueID(),
+    title: t(`modals.newBoard.templateColumns.${key}`),
+    cards: template.exampleCards?.[index]
+      ? template.exampleCards[index].map((card) => ({
+          ...card,
+          id: generateUniqueID(),
+        }))
+      : [],
+  }));
+
+const templateOptions = computed(() =>
+  boardTemplates.map((tpl) => ({
+    id: tpl.id,
+    tpl,
+    name: t(`modals.newBoard.templates.${tpl.id}`),
+    description: tpl.columnKeys
+      .map((key) => t(`modals.newBoard.templateColumns.${key}`))
+      .join(" → "),
+  }))
+);
+
+const selectTemplate = (template: BoardTemplate) => {
+  selectedTemplateId.value = template.id;
+  columns.value = buildColumnsFromTemplate(template);
+};
+
 const boardNameInput: Ref<HTMLInputElement | null> = ref(null);
 const boardNameEmptyError = ref(false);
 
 const newBoardName = ref("");
-const exampleColumns = ref(false);
-const columns: Ref<Array<Column>> = ref(staticExampleColumns.map((column) => ({ title: column.title, id: generateUniqueID(), cards: [] })));
+const selectedTemplateId = ref(boardTemplates[0]?.id ?? "basic");
+const columns: Ref<Array<Column>> = ref(
+  boardTemplates[0] ? buildColumnsFromTemplate(boardTemplates[0]) : []
+);
 
 onUpdated(() => {
   nextTick(() => {
@@ -178,14 +221,10 @@ const addColumnAndScrollToEnd = () => {
 const createNewBoard = () => {
   if (newBoardName.value == null || !/\S/.test(newBoardName.value)) return;
 
-  if (exampleColumns.value === true) {
-    emitter.emit("createBoard", { title: newBoardName.value });
-  } else {
-    emitter.emit("createBoard", {
-      columns: columns.value,
-      title: newBoardName.value,
-    });
-  }
+  emitter.emit("createBoard", {
+    columns: columns.value,
+    title: newBoardName.value,
+  });
 
   closeModal();
 };
@@ -193,24 +232,9 @@ const createNewBoard = () => {
 const closeModal = () => {
   newBoardName.value = "";
   boardNameEmptyError.value = false; // we do not want to show the error before the user clicks outside the input for the first time
-  exampleColumns.value = false;
-  columns.value = [
-    {
-      cards: [],
-      id: generateUniqueID(),
-      title: "Todo",
-    },
-    {
-      cards: [],
-      id: generateUniqueID(),
-      title: "Work in progress",
-    },
-    {
-      cards: [],
-      id: generateUniqueID(),
-      title: "Done",
-    },
-  ];
+  const defaultTemplate = boardTemplates[0];
+  selectedTemplateId.value = defaultTemplate?.id ?? "basic";
+  columns.value = defaultTemplate ? buildColumnsFromTemplate(defaultTemplate) : [];
   emit("closeModal");
 };
 </script>

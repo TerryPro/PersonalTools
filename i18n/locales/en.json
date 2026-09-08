@@ -258,7 +258,41 @@
       "newColumn": "New Column",
       "createBoardAction": "Create Board",
       "boardNameEmptyError": "Board name cannot be empty",
-      "placeholder": "Enter a name for the board"
+      "placeholder": "Enter a name for the board",
+      "templateLabel": "Choose a template",
+      "templates": {
+        "basic": "Basic Kanban",
+        "project": "Project Management",
+        "bug": "Bug Tracker",
+        "content": "Content Calendar",
+        "sales": "Sales Pipeline",
+        "gtd": "Personal GTD",
+        "example": "Example Board"
+      },
+      "templateColumns": {
+        "todo": "To Do",
+        "doing": "Doing",
+        "inProgress": "In Progress",
+        "done": "Done",
+        "backlog": "Backlog",
+        "review": "In Review",
+        "toReproduce": "To Reproduce",
+        "fixed": "Fixed",
+        "verified": "Verified",
+        "ideas": "Ideas",
+        "drafting": "Drafting",
+        "published": "Published",
+        "lead": "Lead",
+        "contacted": "Contacted",
+        "proposal": "Proposal",
+        "negotiation": "Negotiation",
+        "won": "Won",
+        "lost": "Lost",
+        "inbox": "Inbox",
+        "next": "Next",
+        "waiting": "Waiting",
+        "someday": "Someday"
+      }
     },
     "renameBoard": {
       "title": "Rename board",

@@ -32,19 +32,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           />
         </div>
         <section id="inputs" class="mt-4 flex flex-col">
-          <label class="text-medium text-dim-1 mb-2 text-lg" for="boardName">{{
+          <label class="text-medium mb-2 text-lg text-dim-1" for="boardName">{{
             $t("modals.renameBoard.name")
           }}</label>
           <input
             id="boardName"
             ref="boardNameInput"
             v-model="newBoardName"
-            class="placeholder:text-dim-3-placeholder bg-elevation-2 border-elevation-3 border-accent-focus h-10 max-w-80 rounded-md border p-2 transition-colors duration-300 focus:border-2 focus:border-dotted focus:outline-none"
+            class="placeholder:text-dim-3-placeholder border-accent-focus h-10 max-w-80 rounded-md border border-elevation-3 bg-elevation-2 p-2 transition-colors duration-300 focus:border-2 focus:border-dotted focus:outline-none"
             maxlength="500"
             :placeholder="$t('modals.renameBoard.placeholder')"
             type="text"
             autofocus
-          />
+          >
         </section>
         <section
           id="buttons"
@@ -57,7 +57,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             {{ $t("general.cancelAction") }}
           </button>
           <button
-            class="bg-accent text-buttons transition-button rounded-md px-4 py-2"
+            class="transition-button rounded-md bg-accent px-4 py-2 text-buttons hover:bg-accent-darker"
             @click="renameBoard()"
           >
             {{ $t("general.renameAction") }}

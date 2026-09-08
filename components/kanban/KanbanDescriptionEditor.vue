@@ -25,7 +25,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     :tippy-options="{ duration: 100 }"
   >
     <div
-      class="bg-primary border-elevation-1 -mb-1.5 flex flex-row items-center gap-1 rounded-md border px-2 py-1"
+      class="-mb-1.5 flex flex-row items-center gap-1 rounded-md border border-elevation-1 bg-primary px-2 py-1"
     >
       <button
         :class="{ 'is-active': editor.isActive('bold') }"
@@ -68,7 +68,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         <ph-file-code class="size-5" />
       </button>
 
-      <div class="bg-elevation-3 mx-1 h-6 w-px" />
+      <div class="mx-1 h-6 w-px bg-elevation-3" />
 
       <button
         :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }"
@@ -104,7 +104,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       </button>
     </div>
   </bubble-menu>
-  <editor-content class="bg-elevation-2 mt-1 rounded-sm" :editor="editor" />
+  <editor-content class="mt-1 rounded-sm bg-elevation-2" :editor="editor" />
 </template>
 
 <script>
@@ -237,14 +237,22 @@ export default {
 }
 
 .tiptap code {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: color-mix(in srgb, var(--accent) 50%, white);
+  background-color: var(--elevation-2);
+  /* accent pushed toward the text color so it stays readable on any theme */
+  color: color-mix(in srgb, var(--accent) 75%, var(--text));
 }
 
 .tiptap pre {
-  background: #0d0d0d;
-  color: #fff;
-  font-family: "JetBrainsMono", monospace;
+  background: var(--elevation-2);
+  color: var(--text);
+  border: 1px solid var(--elevation-3);
+  /* keep in sync with fontFamily.mono in tailwind.config.js */
+  font-family:
+    "JetBrains Mono",
+    "Cascadia Code",
+    Consolas,
+    ui-monospace,
+    monospace;
   padding: 0.75rem 1rem;
   margin: 1rem 0;
   border-radius: 0.5rem;

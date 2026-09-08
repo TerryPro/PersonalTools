@@ -40,14 +40,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         <p class="mr-8 mt-2">
           {{ $t("modals.changelog.welcome") }}
           <a
-            class="text-accent text-accent-darker-hover"
+            class="text-accent-darker-hover text-accent"
             href="https://discord.gg/AVqHrvxB9C"
             target="_blank"
             >{{ $t("modals.changelog.welcomeLink") }}</a
           >
         </p>
 
-        <br />
+        <br >
         <span class="text-xl font-bold">{{
           $t("modals.changelog.changes")
         }}</span>
@@ -60,7 +60,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
         <div class="mt-6 flex justify-between">
           <button
-            class="bg-accent text-buttons mb-4 w-full rounded px-4 py-2"
+            class="mb-4 w-full rounded bg-accent px-4 py-2 text-buttons hover:bg-accent-darker"
             @click="$emit('closeModal')"
           >
             {{ $t("general.closeAction") }}

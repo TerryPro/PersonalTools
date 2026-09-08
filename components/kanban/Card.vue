@@ -30,7 +30,7 @@ limitations under the License.
             ? { 'background-color': cardBackgroundColor }
             : {},
         ]"
-        class="kanban-card border-elevation-3 flex min-h-[30px] w-full cursor-pointer flex-col items-start gap-1 rounded-[3px] border p-3"
+        class="kanban-card flex min-h-[30px] w-full cursor-pointer flex-col items-start gap-1 rounded-[3px] border border-elevation-3 p-3"
         @click.self="$emit('openEditCardModal', card)"
       >
         <div
@@ -43,7 +43,7 @@ limitations under the License.
               @double-click="enableCardEditMode"
               @single-click="$emit('openEditCardModal', card)"
             >
-              <hr v-if="name === '---'" class="mt-0.5" />
+              <hr v-if="name === '---'" class="mt-0.5" >
               <p v-else ref="cardNameText">
                 {{ name }}
               </p>
@@ -54,7 +54,7 @@ limitations under the License.
               v-model="name"
               v-focus
               v-resizable
-              class="bg-elevation-3 text-normal m-0 size-full resize-none rounded-sm p-0 focus:outline-none"
+              class="m-0 size-full resize-none rounded-sm bg-elevation-3 p-0 text-normal focus:outline-none"
               maxlength="1000"
               type="text"
               @blur="updateCardName"
@@ -86,18 +86,36 @@ limitations under the License.
         </div>
 
         <div
-          class="flex flex-row flex-wrap items-center gap-2"
+          v-if="descriptionPlainText"
+          class="w-full cursor-pointer"
           @click="$emit('openEditCardModal', card)"
         >
-          <PhTextAlignLeft
-            v-if="!isDescriptionEmpty"
-            :class="[cardTextColorDim, iconSizeClass]"
-          />
+          <Tooltip :label="descriptionPlainText" direction="top" multiline>
+            <template #trigger>
+              <div class="flex w-full flex-row items-start gap-1.5">
+                <PhTextAlignLeft
+                  :class="[cardTextColorDim, iconSizeClass]"
+                  class="mt-0.5 shrink-0"
+                />
+                <p
+                  :class="[cardTextColorDim, taskTextClass]"
+                  class="line-clamp-3 min-w-0 flex-1 break-words"
+                >
+                  {{ descriptionPlainText }}
+                </p>
+              </div>
+            </template>
+          </Tooltip>
+        </div>
 
+        <div
+          v-if="tasks && tasks.length > 0"
+          class="flex w-full cursor-pointer flex-col gap-1"
+          @click="$emit('openEditCardModal', card)"
+        >
           <div
-            v-if="tasks && taskCompletionStatus !== '0/0'"
             :class="{
-              'bg-accent text-buttons rounded-sm px-1': allTasksCompleted,
+              'w-fit rounded-sm bg-accent px-1 text-buttons hover:bg-accent-darker': allTasksCompleted,
             }"
             class="flex flex-row items-center gap-1"
           >
@@ -115,23 +133,51 @@ limitations under the License.
               >{{ taskCompletionStatus }}</span
             >
           </div>
+          <ul class="flex w-full flex-col gap-0.5">
+            <li
+              v-for="(task, index) in tasks"
+              :key="task.id ?? index"
+              class="flex w-full flex-row items-start gap-1.5"
+            >
+              <span
+                :class="[
+                  task.finished ? cardTextColor : cardTextColorDim,
+                  taskTextClass,
+                ]"
+                class="shrink-0 leading-none"
+                aria-hidden="true"
+                >{{ task.finished ? "✓" : "○" }}</span
+              >
+              <span
+                :class="[
+                  task.finished ? cardTextColorDim : cardTextColor,
+                  taskTextClass,
+                  task.finished ? 'line-through' : '',
+                ]"
+                class="line-clamp-1 min-w-0 flex-1 break-words"
+                :title="task.name"
+                >{{ task.name }}</span
+              >
+            </li>
+          </ul>
+        </div>
 
-          <div
-            v-if="dueDate"
-            class="flex flex-row items-center gap-1"
-            :class="{
-              'text-buttons rounded-sm bg-accent px-1': isDueDateCompleted,
-              'text-buttons rounded-sm bg-red-600 px-1': dueDateOverdue && !isDueDateCompleted,
-            }"
-          >
-            <PhCheckCircle
-              v-if="isDueDateCompleted"
-              class="text-buttons"
-              :class="iconSizeClass"
-            />
-            <PhClock v-else :class="iconSizeClass" />
-            <span :class="taskTextClass">{{ getFormattedDueDate }}</span>
-          </div>
+        <div
+          v-if="dueDate"
+          class="flex w-fit cursor-pointer flex-row items-center gap-1"
+          :class="{
+            'rounded-sm bg-accent px-1 text-buttons hover:bg-accent-darker': isDueDateCompleted,
+            'rounded-sm bg-red-600 px-1 text-buttons': dueDateOverdue && !isDueDateCompleted,
+          }"
+          @click="$emit('openEditCardModal', card)"
+        >
+          <PhCheckCircle
+            v-if="isDueDateCompleted"
+            class="text-buttons"
+            :class="iconSizeClass"
+          />
+          <PhClock v-else :class="iconSizeClass" />
+          <span :class="taskTextClass">{{ getFormattedDueDate }}</span>
         </div>
       </div>
     </ContextMenuTrigger>
@@ -168,6 +214,7 @@ limitations under the License.
 import type { Card, Tag } from "@/types/kanban-types";
 
 import { getContrast } from "~/utils/colorUtils";
+import { htmlToPlainText } from "~/utils/textUtils";
 import { XMarkIcon } from "@heroicons/vue/24/solid";
 import {
   PhCheckCircle,
@@ -261,6 +308,10 @@ const isDescriptionEmpty = computed(() => {
 
   return false;
 });
+
+// Plain-text version of the tiptap HTML description, used for the card-face
+// preview and the hover tooltip. Shared with BoardPreview via utils/textUtils.
+const descriptionPlainText = computed(() => htmlToPlainText(description.value));
 
 const taskCompletionStatus = computed(() => {
   if (!tasks.value) return "0/0";

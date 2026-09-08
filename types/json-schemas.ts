@@ -23,17 +23,18 @@ import { z } from "zod";
 
 export const kanriThemeSchema = z.object({
   accent: z.string(),
-  accentDarker: z.string(),
   bgPrimary: z.string(),
   elevation1: z.string(),
   elevation2: z.string(),
   elevation3: z.string(),
   text: z.string(),
   textButtons: z.string(),
-  textD1: z.string(),
-  textD2: z.string(),
-  textD3: z.string(),
-  textD4: z.string(),
+  // derived shades are optional: withDerivedColors fills in any missing ones on load
+  accentDarker: z.string().optional().nullable(),
+  textD1: z.string().optional().nullable(),
+  textD2: z.string().optional().nullable(),
+  textD3: z.string().optional().nullable(),
+  textD4: z.string().optional().nullable(),
 });
 
 const kanriTagSchema = z.object({

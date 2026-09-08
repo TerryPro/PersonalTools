@@ -55,32 +55,32 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
     <!-- Left: board list -->
     <aside
-      class="bg-primary-darker border-elevation-1 flex w-64 shrink-0 flex-col border-r"
+      class="flex w-64 shrink-0 flex-col border-r border-elevation-1 bg-primary-darker"
     >
       <section
         id="board-search-and-sort"
-        class="border-elevation-1 flex shrink-0 flex-col gap-2 border-b p-3"
+        class="flex shrink-0 flex-col gap-2 border-b border-elevation-1 p-3"
       >
         <div class="flex flex-row items-center gap-2">
           <!-- Search input -->
           <div
-            class="border-elevation-2 bg-elevation-1 focus-within:ring-accent/70 relative min-w-0 flex-1 rounded-md border shadow-sm focus-within:ring-2"
+            class="focus-within:ring-accent/70 relative min-w-0 flex-1 rounded-md border border-elevation-2 bg-elevation-1 shadow-sm focus-within:ring-2"
           >
             <div
               class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5"
             >
-              <MagnifyingGlassIcon class="text-dim-3 size-4" />
+              <MagnifyingGlassIcon class="size-4 text-dim-3" />
             </div>
             <input
               v-model="searchQuery"
               :placeholder="searchPlaceholder"
-              class="placeholder:text-dim-3 h-10 w-full rounded-md bg-transparent px-8 text-sm outline-none"
+              class="h-10 w-full rounded-md bg-transparent px-8 text-sm outline-none placeholder:text-dim-3"
               type="text"
               aria-label="Search boards"
             >
             <button
               v-if="searchQuery"
-              class="text-dim-2 hover:bg-elevation-2-hover absolute inset-y-0 right-0 mr-1 flex items-center rounded-md p-1.5"
+              class="hover:bg-elevation-2-hover absolute inset-y-0 right-0 mr-1 flex items-center rounded-md p-1.5 text-dim-2"
               aria-label="Clear search"
               @click="searchQuery = ''"
             >
@@ -90,7 +90,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
           <!-- Create new board -->
           <button
-            class="bg-accent text-buttons transition-button flex size-10 shrink-0 items-center justify-center rounded-md font-semibold"
+            class="transition-button flex size-10 shrink-0 items-center justify-center rounded-md bg-accent font-semibold text-buttons hover:bg-accent-darker"
             :aria-label="$t('components.sidebar.createNewBoard')"
             :title="$t('components.sidebar.createNewBoard')"
             @click="newBoardModalVisible = true"
@@ -107,7 +107,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <Dropdown>
             <template #trigger>
               <button
-                class="bg-elevation-1 bg-elevation-2-hover transition-button flex h-10 w-full flex-row items-center gap-2 rounded-md px-3"
+                class="bg-elevation-2-hover transition-button flex h-10 w-full flex-row items-center gap-2 rounded-md bg-elevation-1 px-3"
               >
                 <PhFunnel class="size-5 shrink-0" />
                 <span class="flex-1 truncate text-left text-sm">{{
@@ -153,7 +153,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                   {{ $t("pages.index.sortByLastEdited") }}
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
-              <DropdownMenuSeparator class="bg-elevation-2 m-[5px] h-px" />
+              <DropdownMenuSeparator class="m-[5px] h-px bg-elevation-2" />
               <DropdownMenuCheckboxItem
                 v-model:checked="reverseSorting"
                 class="bg-elevation-2-hover flex w-full cursor-pointer flex-row items-center rounded-md px-4 py-1.5 pl-[25px] text-left"
@@ -177,14 +177,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <div id="boards" class="custom-scrollbar flex-1 overflow-y-auto p-3">
         <p
           v-if="boards.length === 0 && loading === false"
-          class="text-dim-2 px-1 py-2 text-sm"
+          class="px-1 py-2 text-sm text-dim-2"
         >
           {{ $t("pages.index.noBoardsHeading") }}
         </p>
 
         <p
           v-else-if="!loading && searchQuery && visibleBoards?.length === 0"
-          class="text-dim-2 px-1 py-2 text-sm"
+          class="px-1 py-2 text-sm text-dim-2"
         >
           {{ noResultsText }}
         </p>
@@ -216,7 +216,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               :is-simple-preview-mode="(visibleBoards?.length ?? 0) >= 25"
             />
             <div
-              class="border-accent flex flex-row justify-between border-t px-1 py-2"
+              class="flex flex-row justify-between border-t border-accent px-1 py-2"
             >
               <span
                 class="text-no-overflow w-fit max-w-[180px] px-1 text-lg font-semibold"
@@ -257,7 +257,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                       <span class="text-dim-2"><PhExport class="size-5" /></span>
                       <span>{{ $t("pages.kanban.exportBoardAction") }}</span>
                     </DropdownMenuItem>
-                    <div class="border-elevation-3 my-1 border-t" />
+                    <div class="my-1 border-t border-elevation-3" />
                     <!-- Group 3: Danger zone -->
                     <DropdownMenuItem
                       class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left text-red-500"
@@ -302,7 +302,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           <span>{{ $t("pages.index.createBoardPrompt") }}</span>
 
           <button
-            class="bg-accent text-buttons transition-button mt-4 flex w-fit flex-row items-center gap-2 rounded-md px-4 py-2 font-semibold"
+            class="transition-button mt-4 flex w-fit flex-row items-center gap-2 rounded-md bg-accent px-4 py-2 font-semibold text-buttons hover:bg-accent-darker"
             @click="newBoardModalVisible = true"
           >
             <PhPlus class="size-5 shrink-0" />
@@ -316,7 +316,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             {{ $t("pages.index.importDataPrompt") }}
           </p>
           <nuxt-link
-            class="bg-elevation-1 bg-elevation-2-hover border-accent cursor-pointer rounded-md border border-dotted p-4 text-center font-semibold"
+            class="bg-elevation-2-hover cursor-pointer rounded-md border border-dotted border-accent bg-elevation-1 p-4 text-center font-semibold"
             to="/import"
           >
             {{ $t("pages.index.importDataButton") }}
@@ -329,7 +329,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             <a
               href="https://discord.gg/AVqHrvxB9C"
               target="_blank"
-              class="bg-accent cursor-pointer rounded-md px-6 py-2 text-center font-semibold transition-colors"
+              class="cursor-pointer rounded-md bg-accent px-6 py-2 text-center font-semibold transition-colors hover:bg-accent-darker"
               >{{ $t("pages.index.joinDiscordButton") }}</a
             >
           </div>
@@ -337,7 +337,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
         <div
           v-else
-          class="text-dim-2 flex flex-col items-center gap-2 text-center"
+          class="flex flex-col items-center gap-2 text-center text-dim-2"
         >
           <h3 class="text-xl font-semibold">
             {{ $t("pages.index.selectBoardHeading") }}

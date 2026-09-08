@@ -4,6 +4,7 @@
 
 import type { ZodSchema } from "zod";
 import { z, ZodError } from "zod";
+import type { ResolvedTheme, Theme } from "@/types/kanban-types";
 
 const colorMap: Map<string, string> = new Map([
   ["green", "#34D399"],
@@ -471,4 +472,145 @@ export const getAverageColor = async (
   b = Math.round(b / a);
 
   return [r, g, b];
+};
+
+/**
+ * ------------- OKLCH Theme Derivation -------------
+ *
+ * Perceptually uniform helpers used to derive the secondary shades of a
+ * theme (accentDarker, textD1-4) from its base colors. Unlike the RGB
+ * channel arithmetic of lightenColor, these work for both light-on-dark
+ * and dark-on-light palettes.
+ */
+
+const HexColorSchema = z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
+  message: "Invalid hex color format. Expected #RGB or #RRGGBB.",
+});
+
+type Oklab = { L: number; a: number; b: number };
+
+const hexToLinearRgb = (hex: string): [number, number, number] => {
+  let color = hex.replace(/^#/, "");
+  if (color.length === 3) {
+    color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
+  }
+  const [r, g, b] = color.match(/.{2}/g)!.map((x) => parseInt(x, 16) / 255);
+  const toLinear = (c: number): number =>
+    c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  return [toLinear(r), toLinear(g), toLinear(b)];
+};
+
+const linearRgbToHex = (r: number, g: number, b: number): string => {
+  const toSrgb = (c: number): number => {
+    const v =
+      c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+    return Math.round(Math.max(Math.min(1, v), 0) * 255);
+  };
+  return rgbToHex(toSrgb(r), toSrgb(g), toSrgb(b));
+};
+
+const hexToOklab = (hex: string): Oklab => {
+  const [r, g, b] = hexToLinearRgb(hex);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  return {
+    L: 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+    a: 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+    b: 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+  };
+};
+
+const oklabToHex = ({ L, a, b }: Oklab): string => {
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
+  const l = l_ * l_ * l_;
+  const m = m_ * m_ * m_;
+  const s = s_ * s_ * s_;
+  return linearRgbToHex(
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
+  );
+};
+
+/**
+ * Derives the darker shade of an accent color (perceptual lightness -15%,
+ * chroma slightly reduced so the shade does not oversaturate).
+ * @param accent - The base accent hex color.
+ * @returns The derived darker hex color, or the input on validation failure.
+ */
+export const deriveAccentDarker = (accent: string): string => {
+  try {
+    validateInput(HexColorSchema, accent);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      console.error("Invalid accent color:", error.errors);
+    }
+    return accent;
+  }
+
+  const lab = hexToOklab(accent);
+  return oklabToHex({ L: lab.L * 0.85, a: lab.a * 0.98, b: lab.b * 0.98 });
+};
+
+/**
+ * Derives the four-step dimmed text ramp by interpolating from the text
+ * color toward the background in OKLab space. Because dimming means
+ * "moving toward the background", the ramp is correct for both dark
+ * themes (light text dims downward) and light themes (dark text dims
+ * upward). Mix ratios approximate the hand-tuned stock palettes.
+ * @param text - The primary text hex color.
+ * @param bg - The primary background hex color the ramp fades toward.
+ * @returns The derived textD1-4 hex colors, or flat text on validation failure.
+ */
+export const deriveTextRamp = (
+  text: string,
+  bg: string
+): { textD1: string; textD2: string; textD3: string; textD4: string } => {
+  try {
+    validateInput(HexColorSchema, text);
+    validateInput(HexColorSchema, bg);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      console.error("Invalid text or background color:", error.errors);
+    }
+    return { textD1: text, textD2: text, textD3: text, textD4: text };
+  }
+
+  const from = hexToOklab(text);
+  const to = hexToOklab(bg);
+  const mix = (t: number): string =>
+    oklabToHex({
+      L: from.L + (to.L - from.L) * t,
+      a: from.a + (to.a - from.a) * t,
+      b: from.b + (to.b - from.b) * t,
+    });
+
+  return {
+    textD1: mix(0.08),
+    textD2: mix(0.18),
+    textD3: mix(0.35),
+    textD4: mix(0.55),
+  };
+};
+
+/**
+ * Resolves a possibly partial theme into a full 12-field palette:
+ * hand-tuned values are kept as-is, missing derived shades are computed.
+ * Every palette leaving the theme store passes through this function.
+ * @param theme - The theme with optional derived fields.
+ * @returns The fully resolved theme.
+ */
+export const withDerivedColors = (theme: Theme): ResolvedTheme => {
+  const ramp = deriveTextRamp(theme.text, theme.bgPrimary);
+  return {
+    ...theme,
+    accentDarker: theme.accentDarker ?? deriveAccentDarker(theme.accent),
+    textD1: theme.textD1 ?? ramp.textD1,
+    textD2: theme.textD2 ?? ramp.textD2,
+    textD3: theme.textD3 ?? ramp.textD3,
+    textD4: theme.textD4 ?? ramp.textD4,
+  };
 };

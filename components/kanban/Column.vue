@@ -22,7 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
   <div
     ref="columnDOMElement"
     :class="[
-      'kanban-column bg-elevation-1 max-h-column flex flex-col rounded-lg p-2',
+      'kanban-column max-h-column flex flex-col rounded-lg bg-elevation-1 p-2',
       columnSizeClass,
       columnSpacingClass,
     ]"
@@ -36,14 +36,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     >
       <div v-if="!titleEditing" class="flex flex-row items-center gap-1.5">
         <h1
-          class="stop-text-overflow ml-1 font-bold text-lg"
+          class="stop-text-overflow ml-1 text-lg font-bold"
           @click="enableTitleEditing()"
         >
           {{ props.title }}
         </h1>
         <span
           v-if="cardCountDisplayEnabled"
-          :class="['bg-elevation-2 rounded-2xl px-2 py-0.5', badgeSizeClass]"
+          :class="['rounded-2xl bg-elevation-2 px-2 py-0.5', badgeSizeClass]"
           >{{ cards.length }}</span
         >
       </div>
@@ -55,7 +55,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         v-focus
         :v-disable-spellcheck="settings.disableSpellcheck"
         :class="[
-          'bg-elevation-2 border-accent text-no-overflow -m-2 mr-2 w-full rounded-sm border-2 border-dotted px-2 outline-none font-bold text-lg',
+          'text-no-overflow -m-2 mr-2 w-full rounded-sm border-2 border-dotted border-accent bg-elevation-2 px-2 text-lg font-bold outline-none',
           inputSizeClass,
         ]"
         maxlength="1000"
@@ -65,12 +65,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
           updateColumnTitle();
           emitter.emit('columnActionDone');
         "
-      />
+      >
       
       <Dropdown align="end">
         <template #trigger>
           <button
-          class="bg-elevation-1 bg-elevation-2-hover transition-button h-full rounded-md"
+          class="bg-elevation-2-hover transition-button h-full rounded-md bg-elevation-1"
           @click.prevent
           >
           <EllipsisHorizontalIcon class="size-6" />
@@ -78,19 +78,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         </template>
         <template #content>
             <DropdownMenuItem
-              class="bg-elevation-2-hover w-full cursor-pointer rounded-md px-4 py-1.5 pr-6 text-left flex items-center gap-2"
+              class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left"
               @click="enableCardAddMode(true)"
             >
                 {{$t('components.kanban.column.addCardTop')}}
             </DropdownMenuItem>
             <DropdownMenuItem
-              class="bg-elevation-2-hover w-full cursor-pointer rounded-md px-4 py-1.5 pr-6 text-left flex items-center gap-2"
+              class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left"
               @click="$emit('removeAllColumnCards', id)"
             >
                  {{$t('components.kanban.card.deleteAllColumnCardsAction')}}               
             </DropdownMenuItem>
             <DropdownMenuItem
-              class="bg-elevation-2-hover w-full cursor-pointer rounded-md px-4 py-1.5 pr-6 text-left flex items-center gap-2"
+              class="bg-elevation-2-hover flex w-full cursor-pointer items-center gap-2 rounded-md px-4 py-1.5 pr-6 text-left"
               @click="$emit('removeColumn', id)"
             >
                 {{$t('components.kanban.column.deleteColumnAction')}}
@@ -148,7 +148,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         v-focus
         v-resizable
         :class="[
-          'bg-elevation-2 border-accent-focus border-2 border-transparent mb-2 overflow-hidden rounded-sm p-1 focus:border-dotted focus:outline-none',
+          'border-accent-focus mb-2 overflow-hidden rounded-sm border-2 border-transparent bg-elevation-2 p-1 focus:border-dotted focus:outline-none',
           textAreaSizeClass,
         ]"
         maxlength="5000"
@@ -163,7 +163,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         <button
           id="submitButton"
           :class="[
-            'text-buttons transition-button bg-accent rounded-md px-2 py-1',
+            'transition-button rounded-md bg-accent px-2 py-1 text-buttons hover:bg-accent-darker',
             buttonSizeClass,
           ]"
           @click="
@@ -195,7 +195,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     <div
       v-if="!cardAddMode"
       :class="[
-        'text-dim-1 bg-elevation-3-hover mt-2 flex cursor-pointer flex-row items-center gap-1 rounded-md py-1 font-medium',
+        'bg-elevation-3-hover mt-2 flex cursor-pointer flex-row items-center gap-1 rounded-md py-1 font-medium text-dim-1',
         addCardButtonSpacingClass,
       ]"
       @click="enableCardAddMode()"
@@ -217,7 +217,6 @@ import emitter from "@/utils/emitter";
 import { PlusIcon, EllipsisHorizontalIcon } from "@heroicons/vue/24/solid";
 //@ts-expect-error, sadly this library does not have ts typings
 import { Container, Draggable } from "vue3-smooth-dnd";
-import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
   cardsList: Array<Card>;
@@ -262,8 +261,6 @@ const emit = defineEmits<{
   (e: "duplicateCard", columnId: string, cardId: string | undefined): void;
   (e: "reorderCards", columnId: string, newCardsOrder: Array<Card>): void;
 }>();
-
-const { t } = useI18n();
 
 const settings = useSettingsStore();
 
@@ -397,21 +394,6 @@ const inputSizeClass = computed(() => {
       return "text-xl py-2";
     default:
       return "text-base py-1";
-  }
-});
-
-const iconSizeClass = computed(() => {
-  switch (props.zoomLevel) {
-    case -1:
-      return "size-4";
-    case 0:
-      return "size-4";
-    case 1:
-      return "size-5";
-    case 2:
-      return "size-6";
-    default:
-      return "size-4";
   }
 });
 

@@ -66,20 +66,32 @@ export declare interface Card {
   tags?: Array<Tag> | null;
 }
 
-export declare interface Theme {
+export declare interface ThemeBase {
   accent: string;
-  accentDarker: string;
   bgPrimary: string;
   elevation1: string;
   elevation2: string;
   elevation3: string;
   text: string;
   textButtons: string;
+}
+
+export declare interface Theme extends ThemeBase {
+  // derived shades: optional on input, always filled in by withDerivedColors
+  accentDarker?: string;
+  textD1?: string;
+  textD2?: string;
+  textD3?: string;
+  textD4?: string;
+}
+
+export declare type ResolvedTheme = ThemeBase & {
+  accentDarker: string;
   textD1: string;
   textD2: string;
   textD3: string;
   textD4: string;
-}
+};
 
 export declare type ThemeIdentifiers =
   | "catppuccin"

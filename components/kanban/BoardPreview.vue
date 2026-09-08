@@ -38,7 +38,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
         <div
           v-for="column in board.columns"
           :key="column.id"
-          class="bg-elevation-2 flex h-min w-10 shrink-0 flex-col gap-px rounded-sm p-0.5 text-[3px] font-bold"
+          class="flex h-min w-10 shrink-0 flex-col gap-px rounded-sm bg-elevation-2 p-0.5 text-[3px] font-bold"
         >
           {{ column.title }}
           <div
@@ -51,14 +51,28 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                 ? card.color
                 : 'bg-elevation-3'
             "
-            class="text-no-overflow mb-0.5 rounded-[0.05rem] p-[2px] text-[2px]"
+            class="text-no-overflow mb-0.5 flex flex-col rounded-[0.05rem] p-[2px] text-[2px]"
             :style="[
               card.color?.startsWith('#')
                 ? { 'background-color': card.color }
                 : {},
             ]"
           >
-            {{ card.name }}
+            <span class="text-no-overflow">{{ card.name }}</span>
+            <!-- Thumbnail-scale echo of the card face: a faint description snippet
+                 and one compact line per task. Purely decorative at this size, so
+                 the plain-text helper is called inline rather than precomputed. -->
+            <span
+              v-if="htmlToPlainText(card.description)"
+              class="text-no-overflow line-clamp-2 opacity-70"
+            >{{ htmlToPlainText(card.description) }}</span>
+            <template v-if="card.tasks && card.tasks.length > 0">
+              <span
+                v-for="(task, taskIndex) in card.tasks"
+                :key="task.id ?? taskIndex"
+                class="text-no-overflow line-clamp-1 opacity-70"
+              >{{ task.finished ? "✓" : "○" }} {{ task.name }}</span>
+            </template>
           </div>
         </div>
       </div>
@@ -66,7 +80,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
   </div>
   <div
     v-else
-    class="bg-elevation-2 flex aspect-video h-32 flex-row gap-4 overflow-hidden rounded-t-md p-2"
+    class="flex aspect-video h-32 flex-row gap-4 overflow-hidden rounded-t-md bg-elevation-2 p-2"
   >
     <div
       v-for="column in board.columns"
@@ -76,7 +90,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <div
         v-for="card in column.cards"
         :key="card.id"
-        class="bg-elevation-2 mb-1 rounded-sm p-2"
+        class="mb-1 rounded-sm bg-elevation-2 p-2"
       />
     </div>
   </div>
@@ -86,6 +100,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 import type { Board } from "@/types/kanban-types";
 
 import { useBackgroundImage } from "@/composables/useBackgroundImage";
+import { htmlToPlainText } from "@/utils/textUtils";
 
 const props = defineProps<{
   board: Board;

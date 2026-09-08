@@ -97,7 +97,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 </template>
 
 <script setup lang="ts">
-import { lightenColor } from "@/utils/colorUtils";
+import { deriveAccentDarker, deriveTextRamp } from "@/utils/colorUtils";
 import { professionalLight } from "@/utils/themes";
 import type { BuiltinThemeId } from "@/stores/theme";
 import type { Theme, ThemeIdentifiers } from "@/types/kanban-types";
@@ -132,7 +132,8 @@ const persist = () => {
   }
 };
 
-// update derived shades whenever their base color changes
+// update derived shades whenever their base color changes;
+// the text ramp also depends on bgPrimary (dimming fades toward the background)
 watch(
   customTheme,
   (newValue) => {
@@ -143,13 +144,16 @@ watch(
 
     const updatedTheme: Theme = { ...newValue };
     if (changedKeys.includes("accent")) {
-      updatedTheme.accentDarker = lightenColor(newValue.accent, -20);
+      updatedTheme.accentDarker = deriveAccentDarker(newValue.accent);
     }
-    if (changedKeys.includes("text")) {
-      updatedTheme.textD1 = lightenColor(newValue.text, 20);
-      updatedTheme.textD2 = lightenColor(newValue.text, 40);
-      updatedTheme.textD3 = lightenColor(newValue.text, 60);
-      updatedTheme.textD4 = lightenColor(newValue.text, 80);
+    if (
+      changedKeys.includes("text") ||
+      changedKeys.includes("bgPrimary")
+    ) {
+      Object.assign(
+        updatedTheme,
+        deriveTextRamp(newValue.text, newValue.bgPrimary)
+      );
     }
 
     prevSnapshot = { ...updatedTheme };

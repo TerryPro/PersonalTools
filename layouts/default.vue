@@ -194,14 +194,8 @@ const cssVars = computed(() => {
   background-color: var(--text-buttons);
 }
 
-.bg-accent {
-  background-color: var(--accent);
-}
-
-.bg-accent:hover {
-  background-color: var(--accent-darker);
-}
-
+/* .bg-accent is provided by Tailwind (registered in tailwind.config.js);
+   interactive elements opt into hover:bg-accent-darker explicitly */
 .bg-accent-no-hover {
   background-color: var(--accent);
 }

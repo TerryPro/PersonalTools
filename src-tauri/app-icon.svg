@@ -1,0 +1,60 @@
+<!-- SPDX-FileCopyrightText: Copyright (c) 2022-2026 trobonox <hello@trobo.dev> -->
+<!-- -->
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!--
+  Source icon for `pnpm exec tauri icon src-tauri/app-icon.svg`.
+  Transparent background + brand-blue horizontal gradient mark so the
+  generated .ico/.png/.icns set matches the in-app Kanri.vue mark.
+-->
+<svg
+  width="1024"
+  height="1024"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient
+      id="kanriGrad"
+      x1="0"
+      y1="0"
+      x2="48"
+      y2="0"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#1d4ed8" />
+      <stop offset="0.5" stop-color="#3b82f6" />
+      <stop offset="1" stop-color="#38bdf8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Board frame -->
+  <rect
+    x="6"
+    y="8"
+    width="36"
+    height="32"
+    rx="5"
+    stroke="url(#kanriGrad)"
+    stroke-width="4"
+  />
+  <!-- Column dividers -->
+  <path d="M18 8v32M30 8v32" stroke="url(#kanriGrad)" stroke-width="4" />
+
+  <!-- Column 1 cards -->
+  <rect x="9" y="12" width="6" height="4" rx="2" fill="url(#kanriGrad)" />
+  <rect x="9" y="18" width="6" height="4" rx="2" fill="url(#kanriGrad)" />
+  <rect x="9" y="24" width="6" height="12" rx="2" fill="url(#kanriGrad)" />
+
+  <!-- Column 2 cards -->
+  <rect x="21" y="12" width="6" height="4" rx="2" fill="url(#kanriGrad)" />
+  <rect x="21" y="18" width="6" height="4" rx="2" fill="url(#kanriGrad)" />
+  <rect x="21" y="24" width="6" height="7" rx="2" fill="url(#kanriGrad)" />
+  <rect x="21" y="33" width="6" height="4" rx="2" fill="url(#kanriGrad)" />
+
+  <!-- Column 3 cards -->
+  <rect x="33" y="12" width="6" height="4" rx="2" fill="url(#kanriGrad)" />
+  <rect x="33" y="18" width="6" height="4" rx="2" fill="url(#kanriGrad)" />
+  <rect x="33" y="24" width="6" height="4" rx="2" fill="url(#kanriGrad)" />
+  <rect x="33" y="30" width="6" height="8" rx="2" fill="url(#kanriGrad)" />
+</svg>

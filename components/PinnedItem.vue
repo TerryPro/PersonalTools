@@ -24,7 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <Tooltip v-if="isActive" :label="props.board.title">
         <template #trigger>
           <nuxt-link :to="'/kanban/' + props.board.id">
-            <div class="bg-elevation-3 transition-button rounded-md p-2">
+            <div class="transition-button rounded-md bg-elevation-3 p-2">
               <span
                 v-if="customChar"
                 class="flex size-7 items-center justify-center text-[20px] leading-none"
@@ -54,10 +54,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
     <ContextMenuPortal to=".default-layout">
       <ContextMenuContent
-        class="text-normal bg-primary-darker border-elevation-1 icon-menu z-[999] w-[300px] rounded-md border p-1 shadow-lg"
+        class="icon-menu z-[999] w-[300px] rounded-md border border-elevation-1 bg-primary-darker p-1 text-normal shadow-lg"
       >
         <div class="px-2 pt-1.5">
-          <div class="bg-elevation-2 mb-2 flex rounded-md p-0.5 text-xs font-medium">
+          <div class="mb-2 flex rounded-md bg-elevation-2 p-0.5 text-xs font-medium">
             <button
               class="flex-1 rounded-sm px-2 py-1 transition-colors"
               :class="activeTab === 'icons' ? 'bg-elevation-3' : 'hover:bg-elevation-1'
@@ -78,10 +78,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               v-model="searchQuery"
               type="text"
               placeholder="Search icons..."
-              class="bg-elevation-2 focus:ring-accent mt-1 w-full rounded px-2 py-1 text-sm focus:outline-none focus:ring-1"
+              class="mt-1 w-full rounded bg-elevation-2 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
             >
           </div>
-          <ContextMenuSeparator class="bg-elevation-1 my-1 h-px" />
+          <ContextMenuSeparator class="my-1 h-px bg-elevation-1" />
 
           <div v-if="searchQuery" class="max-h-[300px] overflow-y-auto">
             <div class="grid grid-cols-5 gap-1 p-1">
@@ -103,7 +103,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
           <div v-else class="max-h-[300px] overflow-y-auto">
             <div v-for="category in categories" :key="category">
-              <ContextMenuLabel class="text-dim-3 px-2 py-1.5 text-xs uppercase tracking-wide">{{
+              <ContextMenuLabel class="px-2 py-1.5 text-xs uppercase tracking-wide text-dim-3">{{
                 category
               }}</ContextMenuLabel>
               <div class="grid grid-cols-5 gap-1 p-1">
@@ -123,7 +123,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
               </div>
               <ContextMenuSeparator
                 v-if="category !== categories[categories.length - 1]"
-                class="bg-elevation-1 my-1 h-px"
+                class="my-1 h-px bg-elevation-1"
               />
             </div>
           </div>
@@ -131,18 +131,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
         <template v-else>
           <div class="flex flex-col gap-2 p-2">
-            <label class="text-dim-3 text-xs font-medium">Character / Emoji</label>
+            <label class="text-xs font-medium text-dim-3">Character / Emoji</label>
             <div class="flex items-center gap-2">
               <input
                 v-model="customCharInput"
                 type="text"
                 maxlength="5"
                 placeholder="e.g. 🐱 or A"
-                class="bg-elevation-2 focus:ring-accent w-full rounded px-2 py-1 text-sm focus:outline-none focus:ring-1"
+                class="w-full rounded bg-elevation-2 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
                 @keydown.enter.prevent="applyCustomChar"
               >
               <button
-                class="bg-accent hover:bg-accent-hover disabled:bg-elevation-2 rounded px-3 py-1 text-xs font-semibold transition-colors"
+                class="rounded bg-accent px-3 py-1 text-xs font-semibold transition-colors hover:bg-accent-darker disabled:bg-elevation-2"
                 :disabled="!customCharInput.trim()"
                 @click="applyCustomChar"
               >Set</button>
@@ -150,14 +150,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             <div class="flex gap-2">
               <button
                 v-if="customChar"
-                class="bg-elevation-2-hover hover:bg-elevation-3 rounded px-2 py-1 text-xs"
+                class="bg-elevation-2-hover rounded px-2 py-1 text-xs hover:bg-elevation-3"
                 @click="clearCustomChar"
               >Clear</button>
             </div>
           </div>
         </template>
 
-        <ContextMenuSeparator class="bg-elevation-1 my-2 h-px" />
+        <ContextMenuSeparator class="my-2 h-px bg-elevation-1" />
         <div class="px-2 pb-2">
           <button
             class="unpin-button bg-destructive/80 hover:bg-destructive text-destructive-content w-full rounded-md px-3 py-1.5 text-sm font-semibold transition-colors"

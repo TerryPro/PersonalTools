@@ -37,7 +37,7 @@ limitations under the License.
                 <Tooltip direction="top" :label="$t('modals.editCard.tooltip')">
                   <template #trigger>
                     <button
-                      class="size-7 rounded-full flex items-center justify-center"
+                      class="flex size-7 items-center justify-center rounded-full"
                       :class="[isCustomColor ? '' : selectedColor]"
                       :style="{
                         'background-color': isCustomColor ? customColor : '',
@@ -63,7 +63,7 @@ limitations under the License.
                     @click="showCustomColorPopup = false"
                   />
                   <div
-                    class="bg-primary border-elevation-1 absolute -left-4 top-8 z-20 flex flex-col gap-1 rounded-md border p-3"
+                    class="absolute -left-4 top-8 z-20 flex flex-col gap-1 rounded-md border border-elevation-1 bg-primary p-3"
                   >
                     <h2 class="mb-1 text-lg font-semibold">
                       {{ $t("modals.editCard.colorTitle") }}
@@ -150,7 +150,7 @@ limitations under the License.
                         />
                       </button>
                       <button
-                        class="bg-elevation-2 bg-elevation-3-hover size-7 rounded-full py-1 pl-1.5 pr-1"
+                        class="bg-elevation-3-hover size-7 rounded-full bg-elevation-2 py-1 pl-1.5 pr-1"
                         @click="
                           setCardColor(columnID, card?.id, 'bg-elevation-2')
                         "
@@ -189,7 +189,7 @@ limitations under the License.
                           v-model="customColor"
                           class="w-20"
                           type="color"
-                        />
+                        >
                         <HexColorInput v-model="customColor" />
                       </div>
                     </div>
@@ -209,7 +209,7 @@ limitations under the License.
                 ref="titleTextArea"
                 v-model="title"
                 v-focus
-                class="bg-elevation-2 text-normal border-accent-focus pointer-events-auto w-[450px] text-xl focus:border-2 focus:border-dotted focus:outline-none"
+                class="border-accent-focus pointer-events-auto w-[450px] bg-elevation-2 text-xl text-normal focus:border-2 focus:border-dotted focus:outline-none"
                 maxlength="1000"
                 type="text"
                 @blur="updateTitle"
@@ -236,7 +236,7 @@ limitations under the License.
             >
               <template #default="{ togglePopover }">
                 <button
-                  class="bg-elevation-2 bg-elevation-3-hover mt-1 flex items-center justify-center gap-2 rounded-md px-2 py-1"
+                  class="bg-elevation-3-hover mt-1 flex items-center justify-center gap-2 rounded-md bg-elevation-2 px-2 py-1"
                   @click="() => togglePopover()"
                 >
                   <PhCalendar class="size-5" />
@@ -250,10 +250,10 @@ limitations under the License.
               <template #footer>
                 <div class="w-full px-4 pb-3">
                   <div class="mt-2 flex flex-col gap-2">
-                    <div class="flex flex-row items-center gap-6 mb-2">
+                    <div class="mb-2 flex flex-row items-center gap-6">
                       <SwitchRoot
                         v-model:checked="isDueDateCounterRelative"
-                        class="bg-elevation-2 bg-accent-checked relative flex h-[24px] w-[42px] cursor-pointer rounded-full shadow-sm focus-within:outline focus-within:outline-black"
+                        class="bg-accent-checked relative flex h-[24px] w-[42px] cursor-pointer rounded-full bg-elevation-2 shadow-sm focus-within:outline focus-within:outline-black"
                         @update:checked="updateDueDate"
                       >
                         <SwitchThumb
@@ -264,14 +264,14 @@ limitations under the License.
                     </div>
 
                     <button
-                      class="bg-elevation-1 bg-elevation-2-hover flex flex-row items-center justify-center gap-2 rounded-md px-2 py-1"
+                      class="bg-elevation-2-hover flex flex-row items-center justify-center gap-2 rounded-md bg-elevation-1 px-2 py-1"
                       @click="resetDueDate"
                     >
                       <PhTrash class="mt-0.5 size-5" />
                       {{ $t("modals.editCard.dateRemove") }}
                     </button>
                     <button
-                      class="bg-accent flex flex-row items-center justify-center gap-2 rounded-md px-2 py-1"
+                      class="flex flex-row items-center justify-center gap-2 rounded-md bg-accent px-2 py-1 hover:bg-accent-darker"
                       @click="isDueDateCompleted = !isDueDateCompleted; markDueDateCompleted()"
                     >
                       <PhCheck v-if="!isDueDateCompleted" class="mt-0.5 size-5" />
@@ -300,14 +300,14 @@ limitations under the License.
               <h2 class="text-lg font-semibold">
                 {{ $t("modals.editCard.taskTitle") }}
               </h2>
-              <span v-if="tasks.length !== 0" class="text-dim-1 text-sm"
+              <span v-if="tasks.length !== 0" class="text-sm text-dim-1"
                 >({{ getCheckedTaskNumber }}/{{ tasks.length }})</span
               >
             </div>
             <ProgressRoot
               v-if="tasks"
               v-model="getTaskPercentage"
-              class="bg-elevation-2 relative mb-4 h-2 w-[96%] overflow-hidden rounded-full"
+              class="relative mb-4 h-2 w-[96%] overflow-hidden rounded-full bg-elevation-2"
               style="transform: translateZ(0)"
             >
               <ProgressIndicator
@@ -325,8 +325,8 @@ limitations under the License.
                   drag-handle-selector=".task-drag"
                   lock-axis="y"
                   orientation="vertical"
-                  @drop="onTaskDrop"
                   :get-child-payload="(index: number) => tasks[index]"
+                  @drop="onTaskDrop"
                 >
                   <Draggable
                     v-for="(task, index) in tasks"
@@ -342,7 +342,7 @@ limitations under the License.
                       >
                         <CheckboxRoot
                           v-model:checked="task.finished"
-                          class="bg-elevation-4 bg-elevation-2-hover border-elevation-5 flex size-5 shrink-0 appearance-none items-center justify-center rounded-[4px] border outline-none"
+                          class="bg-elevation-2-hover flex size-5 shrink-0 appearance-none items-center justify-center rounded-[4px] border border-elevation-5 bg-elevation-4 outline-none"
                           @update:checked="updateCardTasks()"
                         >
                           <CheckboxIndicator
@@ -350,7 +350,7 @@ limitations under the License.
                           >
                             <PhCheck
                               weight="bold"
-                              class="text-accent-lighter size-4"
+                              class="size-4 text-accent-lighter"
                             />
                           </CheckboxIndicator>
                         </CheckboxRoot>
@@ -360,11 +360,11 @@ limitations under the License.
                           "
                           v-model="currentlyEditingTaskName"
                           v-focus
-                          class="bg-elevation-2 border-accent -mx-1.5 w-full rounded-md border-b-2 border-dotted px-1.5 py-0.5 outline-none"
+                          class="-mx-1.5 w-full rounded-md border-b-2 border-dotted border-accent bg-elevation-2 px-1.5 py-0.5 outline-none"
                           type="text"
                           @blur="updateTask(index)"
                           @keypress.enter="updateTask(index)"
-                        />
+                        >
                         <ClickCounter
                           v-else
                           @double-click="enableTaskEditMode(index, task)"
@@ -383,7 +383,7 @@ limitations under the License.
                           @click="enableTaskEditMode(index, task)"
                         >
                           <PhPencilSimple
-                            class="text-dim-2 text-accent-hover size-4"
+                            class="text-accent-hover size-4 text-dim-2"
                           />
                         </button>
                         <button
@@ -394,7 +394,7 @@ limitations under the License.
                           @click="updateTask(index)"
                         >
                           <PhCheck
-                            class="text-dim-2 text-accent-hover size-4"
+                            class="text-accent-hover size-4 text-dim-2"
                           />
                         </button>
                         <button
@@ -408,7 +408,7 @@ limitations under the License.
                           @click="deleteTask(index)"
                         >
                           <XMarkIcon
-                            class="text-dim-2 text-accent-hover size-4"
+                            class="text-accent-hover size-4 text-dim-2"
                           />
                         </button>
                       </div>
@@ -421,15 +421,15 @@ limitations under the License.
                 ref="newTaskInput"
                 v-model="newTaskName"
                 v-focus
-                class="bg-elevation-2 text-normal border-accent-focus pointer-events-auto w-[96%] rounded-md p-1 text-base focus:border-2 focus:border-dotted focus:outline-none"
+                class="border-accent-focus pointer-events-auto w-[96%] rounded-md bg-elevation-2 p-1 text-base text-normal focus:border-2 focus:border-dotted focus:outline-none"
                 maxlength="1000"
                 :placeholder="$t('modals.editCard.newTaskPlaceholder')"
                 type="text"
                 @keypress.enter="createTask"
-              />
+              >
               <div v-if="taskAddMode" class="ml-0.5 mt-0.5 flex flex-row gap-4">
                 <button
-                  class="bg-accent text-buttons rounded-md px-4 py-1"
+                  class="rounded-md bg-accent px-4 py-1 text-buttons hover:bg-accent-darker"
                   @click="createTask"
                 >
                   {{ $t("general.addAction") }}
@@ -445,10 +445,10 @@ limitations under the License.
               </div>
               <button
                 v-if="!taskAddMode"
-                class="bg-elevation-1 bg-elevation-2-hover mr-8 mt-1 flex h-min w-[96%] cursor-pointer flex-row items-center gap-2 rounded-md py-1 pl-0.5 pr-2"
+                class="bg-elevation-2-hover mr-8 mt-1 flex h-min w-[96%] cursor-pointer flex-row items-center gap-2 rounded-md bg-elevation-1 py-1 pl-0.5 pr-2"
                 @click="enableTaskAddMode"
               >
-                <PlusIcon class="text-accent size-6" />
+                <PlusIcon class="size-6 text-accent" />
                 <span>{{ $t("modals.editCard.taskAdd") }}</span>
               </button>
             </div>
@@ -466,7 +466,7 @@ limitations under the License.
               @before-adding-tag="beforeTagAdd"
             />
             <button
-              class="bg-elevation-3 mt-2 w-fit rounded-md px-2 py-0.5 text-sm"
+              class="mt-2 w-fit rounded-md bg-elevation-3 px-2 py-0.5 text-sm"
               @click="closeModalAndOpenTagEdit"
             >
               {{ $t("modals.editCard.tagsEdit") }}

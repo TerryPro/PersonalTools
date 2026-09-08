@@ -20,37 +20,35 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 <template>
   <svg
-    width="491"
-    height="482"
-    viewBox="0 0 491 482"
+    viewBox="0 0 48 48"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      d="M263.336 75H380.286C352.987 134.282 312.264 205.923 261.284 267.662C193.608 349.618 114.375 406.463 30.2685 406.463V481.463C148.528 481.463 246.943 402.82 319.115 315.417C392.233 226.87 445.125 121.417 471.813 50.7489L490.979 0H436.731H0V75H179.996C165.321 102.983 146.404 133.361 124.14 160.31C85.1362 207.523 42.4065 236.527 0 236.527V311.527C76.592 311.527 138.505 260.68 181.961 208.078C217.709 164.807 245.417 115.091 263.336 75Z"
-      fill="currentColor"
+    <!-- Board frame -->
+    <rect
+      x="6"
+      y="8"
+      width="36"
+      height="32"
+      rx="5"
+      stroke="currentColor"
+      stroke-width="4"
     />
-    <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      d="M263.336 75H380.286C352.987 134.282 312.264 205.923 261.284 267.662C193.608 349.618 114.375 406.463 30.2685 406.463V481.463C148.528 481.463 246.943 402.82 319.115 315.417C392.233 226.87 445.125 121.417 471.813 50.7489L490.979 0H436.731H0V75H179.996C165.321 102.983 146.404 133.361 124.14 160.31C85.1362 207.523 42.4065 236.527 0 236.527V311.527C76.592 311.527 138.505 260.68 181.961 208.078C217.709 164.807 245.417 115.091 263.336 75Z"
-      fill="url(#paint0_linear_493_48)"
-      fill-opacity="0.5"
-    />
-    <defs>
-      <linearGradient
-        id="paint0_linear_493_48"
-        x1="6.99997"
-        y1="506.5"
-        x2="837"
-        y2="-385.5"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop />
-        <stop offset="1" stop-color="white" stop-opacity="0" />
-      </linearGradient>
-    </defs>
+    <!-- Column dividers -->
+    <path d="M18 8v32M30 8v32" stroke="currentColor" stroke-width="4" />
+    <!-- Column 1 cards -->
+    <rect x="9" y="12" width="6" height="4" rx="2" fill="currentColor" />
+    <rect x="9" y="18" width="6" height="4" rx="2" fill="currentColor" />
+    <rect x="9" y="24" width="6" height="12" rx="2" fill="currentColor" />
+    <!-- Column 2 cards -->
+    <rect x="21" y="12" width="6" height="4" rx="2" fill="currentColor" />
+    <rect x="21" y="18" width="6" height="4" rx="2" fill="currentColor" />
+    <rect x="21" y="24" width="6" height="7" rx="2" fill="currentColor" />
+    <rect x="21" y="33" width="6" height="4" rx="2" fill="currentColor" />
+    <!-- Column 3 cards -->
+    <rect x="33" y="12" width="6" height="4" rx="2" fill="currentColor" />
+    <rect x="33" y="18" width="6" height="4" rx="2" fill="currentColor" />
+    <rect x="33" y="24" width="6" height="4" rx="2" fill="currentColor" />
+    <rect x="33" y="30" width="6" height="8" rx="2" fill="currentColor" />
   </svg>
 </template>

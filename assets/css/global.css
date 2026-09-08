@@ -22,7 +22,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 body {
   overscroll-behavior: none;
   scroll-behavior: smooth;
-  background-color: #111112;
+  /* follows the active theme once CSS vars are injected;
+     dark fallback only covers the brief pre-mount window */
+  background-color: var(--bg-primary, #111112);
 }
 
 .smooth-dnd-container {
